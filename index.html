@@ -11,6 +11,7 @@
 @media(max-width:780px){main{padding:22px 17px 35px}.layout,.explain-panel .layout{grid-template-columns:1fr}.circle-svg{max-height:350px}.circle-card{padding:18px 18px 14px}.exercise{padding:22px}.settings{grid-template-columns:1fr 1fr}.settings .quiet{grid-column:1/-1;padding:9px;min-height:40px}.random-note{max-width:150px}.badge{font-size:10px}.layout{gap:15px}.prompt-meta{min-height:0}.footer{flex-direction:column;gap:5px}.circle-caption{font-size:12px}.top-row{align-items:start}.tab{font-size:14px}.tabs{gap:16px}.lead{font-size:14px}.note{font-size:11px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
 @media(max-width:520px){.settings{grid-template-columns:minmax(0,1fr)}.settings .quiet{grid-column:auto}.top-row{flex-wrap:wrap;gap:6px}.tabs{gap:24px}.random-note{display:flex;gap:14px;flex-wrap:wrap;max-width:none;text-align:left;font-size:11px;padding-bottom:12px}.random-note br{display:none}.full-label{display:none}}
+.keypad{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.keypad .key{min-width:0;min-height:46px;padding:8px 4px}.keypad .key.small{font-size:11px}.keypad svg{vertical-align:middle}
 </style>
 </head>
 <body>
@@ -45,9 +46,15 @@
           <p class="prompt-meta" id="task-meta"></p>
           <form id="answer-form" novalidate>
             <label class="answer-label" for="answer">Твоя відповідь</label>
-            <div class="answer-row"><input id="answer" name="answer" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="80" aria-describedby="input-help feedback-text" placeholder="Наприклад, 5π/6"><span class="unit">рад</span></div>
+            <div class="answer-row"><input id="answer" name="answer" type="text" inputmode="none" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="80" aria-describedby="input-help feedback-text" placeholder="Наприклад, 5π/6"><span class="unit">рад</span></div>
             <p class="input-help" id="input-help">Можна писати π або pi: −π/3, 3*pi/2, 1,5. Десяткові відповіді — до 0,01.</p>
-            <div class="keypad" aria-label="Символи для відповіді"><button type="button" class="key" data-insert="π">π</button><button type="button" class="key" data-insert="/">/</button><button type="button" class="key" data-insert="−">−</button><button type="button" class="key" data-insert="(">(</button><button type="button" class="key" data-insert=")">)</button><button type="button" class="key small" id="clear">Очистити</button></div>
+            <div class="keypad" role="group" aria-label="Екранна клавіатура для відповіді">
+              <button type="button" class="key" data-insert="7">7</button><button type="button" class="key" data-insert="8">8</button><button type="button" class="key" data-insert="9">9</button><button type="button" class="key" id="backspace" aria-label="Видалити попередній символ" title="Видалити символ"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M9 5H21V19H9L3 12Z M12 9l6 6m0-6l-6 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></button>
+              <button type="button" class="key" data-insert="4">4</button><button type="button" class="key" data-insert="5">5</button><button type="button" class="key" data-insert="6">6</button><button type="button" class="key" data-insert="π">π</button>
+              <button type="button" class="key" data-insert="1">1</button><button type="button" class="key" data-insert="2">2</button><button type="button" class="key" data-insert="3">3</button><button type="button" class="key" data-insert="/">/</button>
+              <button type="button" class="key" data-insert="0">0</button><button type="button" class="key" data-insert=",">,</button><button type="button" class="key" data-insert="−">−</button><button type="button" class="key" data-insert="+">+</button>
+              <button type="button" class="key" data-insert="(">(</button><button type="button" class="key" data-insert=")">)</button><button type="button" class="key" data-insert="*" aria-label="Помножити">×</button><button type="button" class="key small" id="clear">Очистити</button>
+            </div>
             <div class="actions"><button class="primary" id="check" type="submit">Перевірити<span class="full-label"> відповідь</span></button><button class="text-button" id="hint-button" type="button">Підказка</button></div>
             <button class="text-button" id="reveal" type="button">Показати розв’язання</button>
           </form>
@@ -341,9 +348,15 @@
     const input=$('answer');if(input.disabled)return;
     const from=input.selectionStart ?? input.value.length,to=input.selectionEnd ?? from;
     if(input.value.length-(to-from)+button.dataset.insert.length>80)return;
-    input.setRangeText(button.dataset.insert,from,to,'end');input.focus();
+    input.setRangeText(button.dataset.insert,from,to,'end');input.focus({preventScroll:true});
   }));
-  $('clear').addEventListener('click',()=>{if(!$('answer').disabled){$('answer').value='';$('answer').focus();}});
+  $('backspace').addEventListener('click',()=>{
+    const input=$('answer');if(input.disabled)return;
+    const from=input.selectionStart ?? input.value.length,to=input.selectionEnd ?? from;
+    const previous=Array.from(input.value.slice(0,from)).pop();
+    input.setRangeText('',from===to?from-(previous?.length || 0):from,to,'end');input.focus({preventScroll:true});
+  });
+  $('clear').addEventListener('click',()=>{if(!$('answer').disabled){$('answer').value='';$('answer').focus({preventScroll:true});}});
   function tab(learn){
     $('practice').hidden=learn;$('learn').hidden=!learn;
     for(const [id,selected] of [['practice-tab',!learn],['learn-tab',learn]]){$(id).setAttribute('aria-selected',selected);$(id).tabIndex=selected?0:-1;}
