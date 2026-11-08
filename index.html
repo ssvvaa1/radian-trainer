@@ -39,8 +39,8 @@
       </div>
       <div>
         <section class="card exercise" id="exercise" aria-labelledby="task-title">
-          <div class="step-row"><span id="step">Завдання 1 із 10</span><span id="score-label">З першої спроби: 0</span></div>
-          <div class="progress" role="progressbar" aria-label="Виконано завдань" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0"><span id="progress-fill"></span></div>
+          <div class="step-row"><span id="step">Завдання 1 із 12</span><span id="score-label">З першої спроби: 0</span></div>
+          <div class="progress" role="progressbar" aria-label="Виконано завдань" aria-valuemin="0" aria-valuemax="12" aria-valuenow="0"><span id="progress-fill"></span></div>
           <h2 id="task-title">Яку радіанну міру має дуга?</h2>
           <p class="prompt-meta" id="task-meta"></p>
           <form id="answer-form" novalidate>
@@ -54,9 +54,9 @@
           <div class="hint" id="hint" hidden></div>
           <div class="feedback" id="feedback" role="status" aria-live="polite" aria-atomic="true" hidden><strong id="feedback-title"></strong><p id="feedback-text"></p></div>
           <button class="primary next" id="next" hidden>Наступне завдання →</button>
-          <div class="stats"><div class="stat"><b id="completed">0</b>Виконано</div><div class="stat"><b id="streak">0</b>Правильних поспіль</div><div class="stat"><b id="best">—</b>Найкраща серія / 10</div></div>
+          <div class="stats"><div class="stat"><b id="completed">0</b>Виконано</div><div class="stat"><b id="streak">0</b>Правильних поспіль</div><div class="stat"><b id="best">—</b>Найкраща серія / 12</div></div>
         </section>
-        <section class="card summary" id="summary" aria-labelledby="summary-title" hidden><span class="eyebrow">Серію завершено</span><h2 id="summary-title">Коло стало зрозумілішим</h2><div class="large-score" id="final-score"></div><p>правильних відповідей із першої спроби</p><ul id="final-details"></ul><button class="primary" id="again">Ще 10 випадкових завдань →</button><br><button class="quiet" id="go-learn">Повторити, що таке радіан</button></section>
+        <section class="card summary" id="summary" aria-labelledby="summary-title" hidden><span class="eyebrow">Серію завершено</span><h2 id="summary-title">Коло стало зрозумілішим</h2><div class="large-score" id="final-score"></div><p>правильних відповідей із першої спроби</p><ul id="final-details"></ul><button class="primary" id="again">Ще 12 випадкових завдань →</button><br><button class="quiet" id="go-learn">Повторити, що таке радіан</button></section>
         <p class="note">У завданнях із точкою важливий зазначений проміжок: одна точка відповідає багатьом кутам повороту.</p>
       </div>
     </div>
@@ -77,7 +77,7 @@
 <script>
 'use strict';
 (() => {
-  const TAU = 2 * Math.PI, TOTAL = 10, SVG_NS = 'http://www.w3.org/2000/svg';
+  const TAU = 2 * Math.PI, TOTAL = 12, SVG_NS = 'http://www.w3.org/2000/svg';
   const $ = id => document.getElementById(id);
   const gcd = (a, b) => b ? gcd(b, a % b) : Math.abs(a);
   function fraction(n, d = 1, unit = 'pi') {
@@ -249,7 +249,7 @@
   let best = {};
   try { const saved = JSON.parse(localStorage.getItem('radian-trainer-best') || '{}'); if (saved && typeof saved==='object') best=saved; } catch {}
   const state = {problem:null,index:0,first:0,completed:0,streak:0,revealed:0,hints:0,attempts:0,settled:false,hintUsed:false,mode:'mixed',difficulty:'standard'};
-  const key = () => state.mode+'-'+state.difficulty;
+  const key = () => state.mode+'-'+state.difficulty+'-'+TOTAL;
   function updateStats() {
     $('completed').textContent=state.completed; $('streak').textContent=state.streak;
     $('score-label').textContent='З першої спроби: '+state.first;
@@ -329,7 +329,7 @@
     best[key()]=Math.max(Number.isInteger(best[key()])?best[key()]:0,state.first);
     try{localStorage.setItem('radian-trainer-best',JSON.stringify(best));}catch{}
     $('exercise').hidden=true;$('summary').hidden=false;$('final-score').textContent=state.first+' / '+TOTAL;
-    $('summary-title').textContent=state.first>=8?'Чудово орієнтуєшся на колі':state.first>=5?'Ще трохи — і коло підкориться':'Повтори правило й спробуй знову';
+    $('summary-title').textContent=state.first>=Math.ceil(TOTAL*.8)?'Чудово орієнтуєшся на колі':state.first>=Math.ceil(TOTAL*.5)?'Ще трохи — і коло підкориться':'Повтори правило й спробуй знову';
     $('final-details').replaceChildren();
     for(const text of [`Правильно після повторної спроби: ${TOTAL-state.first-state.revealed}`,`Переглянуто розв’язань: ${state.revealed}`,`Завдань із підказкою: ${state.hints}`]){const li=document.createElement('li');li.textContent=text;$('final-details').append(li);}
     updateStats();$('again').focus();
