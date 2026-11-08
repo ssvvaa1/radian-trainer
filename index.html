@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#174f43">
+<title>Радіани — інтерактивний тренажер</title>
+<style>
+:root{--paper:#f6f5ef;--ink:#203d35;--muted:#667870;--green:#175b49;--lime:#e3edc5;--line:#dce2d7;--orange:#c36a36;--red:#aa3d3b;--white:#fffefa;--shadow:0 12px 40px #203d3509}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}button,input,select{font:inherit}button,select{cursor:pointer}button{touch-action:manipulation}button:disabled{cursor:default;opacity:.55}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #cc8b43;outline-offset:4px}button{border:0}button,input,select{border-radius:10px}main{max-width:1180px;margin:auto;padding:32px 26px 48px}.masthead{display:flex;justify-content:space-between;align-items:center;gap:20px}.brand{font-size:11px;font-weight:750;letter-spacing:.17em;display:flex;align-items:center;gap:10px}.brand-mark{width:32px;height:32px;border:1px solid var(--green);border-radius:50%;display:grid;place-items:center;font:23px Georgia,serif;letter-spacing:0}.badge{font-size:12px;border:1px solid var(--line);padding:6px 12px;border-radius:30px;color:var(--muted)}h1{font:normal clamp(34px,5vw,52px)/1.13 Georgia,"Times New Roman",serif;margin:28px 0 12px;letter-spacing:-.035em}h1 em{font-weight:normal;color:var(--green)}.lead{color:var(--muted);max-width:660px;margin:0 0 22px}.top-row{display:flex;justify-content:space-between;align-items:center;gap:18px;border-bottom:1px solid var(--line);margin-bottom:22px}.tabs{display:flex;gap:24px}.tab{background:none;border-radius:0;color:var(--muted);padding:14px 0;border-bottom:3px solid transparent}.tab[aria-selected=true]{color:var(--green);border-color:var(--green);font-weight:700}.random-note{font-size:12px;color:var(--muted);text-align:right}.settings{display:grid;grid-template-columns:1fr 1fr auto;gap:14px;align-items:end;margin-bottom:20px}.field-label{font-size:12px;font-weight:650;display:block;margin-bottom:6px;color:var(--muted)}select{width:100%;border:1px solid var(--line);background:var(--white);color:var(--ink);padding:11px 34px 11px 12px;min-height:46px}.quiet{background:#edf0e6;color:var(--green);padding:12px 17px;font-weight:650;min-height:46px}.layout{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:22px;align-items:start}.card{border:1px solid var(--line);border-radius:20px;background:var(--white);box-shadow:var(--shadow)}.circle-card{padding:22px 24px 18px}.card-top{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:12px}.eyebrow{font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:750;color:var(--muted)}.type-badge{background:var(--lime);color:var(--green);padding:5px 10px;border-radius:30px;font-size:12px}.circle-svg{display:block;width:100%;height:auto;aspect-ratio:1/1;max-height:470px;overflow:visible}.circle-caption{color:var(--muted);font-size:13px;text-align:center;margin:0 0 12px;min-height:20px}.legend{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;padding-top:14px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--green);margin-right:6px}.dot.orange{background:var(--orange)}.exercise{padding:26px}.step-row{display:flex;justify-content:space-between;gap:12px;align-items:center;color:var(--muted);font-size:12px}.progress{height:4px;background:#edf0e6;margin:12px 0 24px;border-radius:10px;overflow:hidden}.progress span{display:block;height:100%;background:var(--green);transition:width .3s;width:0}h2{font:normal 28px/1.25 Georgia,serif;margin:0 0 12px;letter-spacing:-.015em}.prompt-meta{color:var(--muted);font-size:14px;margin:0 0 22px;min-height:42px}.math{font-family:"Cambria Math","STIX Two Math",Georgia,serif}.constraint{display:inline-block;background:#f0f2e9;padding:3px 8px;border-radius:5px;color:var(--ink);margin:5px 0 0}.answer-label{display:block;font-size:13px;font-weight:650;margin-bottom:8px}.answer-row{display:flex;align-items:center;border:1.5px solid #a6baad;border-radius:12px;background:white;transition:box-shadow .15s}.answer-row:focus-within{box-shadow:0 0 0 3px #175b4912;border-color:var(--green)}.answer-row input{width:100%;min-width:0;border:0;background:transparent;padding:13px 14px;font-size:23px;outline:none;color:var(--ink);font-family:"Cambria Math",Georgia,serif}.answer-row input:focus-visible{outline:none}.unit{padding-right:15px;color:var(--muted);font-size:13px}.input-help{font-size:12px;color:var(--muted);margin:7px 0 12px}.keypad{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.key{border:1px solid var(--line);background:#f8f9f4;color:var(--ink);padding:7px 15px;min-width:43px;font-family:"Cambria Math",Georgia,serif;font-size:19px}.key.small{font:12px system-ui}.actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.primary{background:var(--green);color:white;padding:13px 20px;font-weight:650;min-height:48px}.actions .primary{flex:1}.text-button{background:none;color:var(--green);padding:11px 5px;font-size:13px;text-decoration:underline;text-decoration-color:#a7bdad;text-underline-offset:4px}.feedback{border-radius:12px;padding:14px 16px;margin-top:17px;font-size:14px;background:#edf3e6;color:#264e36}.feedback.wrong{background:#fff0e7;color:#784327}.feedback.invalid{background:#f4efdf;color:#66511e}.feedback p{margin:4px 0 0}.feedback strong{display:block}.hint{border-left:3px solid #c5cf98;background:#f5f6e9;padding:11px 13px;margin:14px 0 0;color:#536044;font-size:13px}.next{width:100%;margin-top:14px}.stats{display:flex;justify-content:space-around;gap:12px;margin-top:20px;border-top:1px solid var(--line);padding-top:17px}.stat{font-size:11px;color:var(--muted);text-align:center}.stat b{display:block;font:25px Georgia,serif;color:var(--ink);margin-bottom:2px}.note{font-size:12px;color:var(--muted);margin:19px 2px 0}.summary{text-align:center;padding:30px 26px}.summary .large-score{font:68px/1 Georgia,serif;color:var(--green);margin:22px 0 8px}.summary .quiet{margin-top:14px}.summary p{color:var(--muted)}.summary h2{margin-top:15px}.summary ul{padding:0;list-style:none;font-size:14px;text-align:left;max-width:290px;margin:20px auto}.summary li{padding:8px 0;border-bottom:1px solid var(--line)}[hidden]{display:none!important}.explain-panel .layout{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)}.explain-body{padding:26px}.explain-body p{color:var(--muted);font-size:14px}.formula{background:#eef2e3;border-radius:14px;padding:17px;margin:18px 0;font-size:26px;text-align:center}.slider-row{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-top:20px;font-size:13px}.slider-value{font-family:"Cambria Math",Georgia,serif;font-size:23px;color:var(--green)}input[type=range]{width:100%;accent-color:var(--green);height:28px;margin:8px 0}.presets{display:flex;flex-wrap:wrap;gap:8px}.preset{background:#eef1e6;border:1px solid var(--line);padding:7px 12px;color:var(--green)}.concept{border-top:1px solid var(--line);margin-top:22px;padding-top:14px;font-size:14px}.concept strong{color:var(--ink)}.footer{display:flex;justify-content:space-between;gap:15px;color:var(--muted);font-size:11px;margin-top:26px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:780px){main{padding:22px 17px 35px}.layout,.explain-panel .layout{grid-template-columns:1fr}.circle-svg{max-height:350px}.circle-card{padding:18px 18px 14px}.exercise{padding:22px}.settings{grid-template-columns:1fr 1fr}.settings .quiet{grid-column:1/-1;padding:9px;min-height:40px}.random-note{max-width:150px}.badge{font-size:10px}.layout{gap:15px}.prompt-meta{min-height:0}.footer{flex-direction:column;gap:5px}.circle-caption{font-size:12px}.top-row{align-items:start}.tab{font-size:14px}.tabs{gap:16px}.lead{font-size:14px}.note{font-size:11px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+@media(max-width:520px){.settings{grid-template-columns:minmax(0,1fr)}.settings .quiet{grid-column:auto}.top-row{flex-wrap:wrap;gap:6px}.tabs{gap:24px}.random-note{display:flex;gap:14px;flex-wrap:wrap;max-width:none;text-align:left;font-size:11px;padding-bottom:12px}.random-note br{display:none}.full-label{display:none}}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="masthead"><div class="brand"><span class="brand-mark" aria-hidden="true">π</span> МАТЕМАТИЧНА ПРАКТИКА</div><span class="badge">Тригонометрія · 10 клас</span></div>
+    <h1>Від дуги — <em>до радіанів</em></h1>
+    <p class="lead">Читай коло, визначай поворот, відчуй радіанну міру. Щоразу — нове випадкове завдання.</p>
+  </header>
+  <div class="top-row">
+    <div class="tabs" role="tablist" aria-label="Режим роботи"><button class="tab" id="practice-tab" role="tab" aria-controls="practice" aria-selected="true" tabindex="0">Тренування</button><button class="tab" id="learn-tab" role="tab" aria-controls="learn" aria-selected="false" tabindex="-1">Що таке радіан?</button></div>
+    <span class="random-note"><span>↺ Проти годинникової — «+»</span><br><span>↻ За годинниковою — «−»</span></span>
+  </div>
+  <section id="practice" role="tabpanel" aria-labelledby="practice-tab">
+    <div class="settings">
+      <label><span class="field-label">Тип завдань</span><select id="mode"><option value="mixed">Змішане тренування</option><option value="arc">Дуга → радіанна міра</option><option value="point">Точка → кут повороту</option><option value="length">Довжина дуги → кут</option></select></label>
+      <label><span class="field-label">Складність</span><select id="difficulty"><option value="basic">Початковий · додатні кути</option><option value="standard" selected>Середній · обидва напрями</option><option value="advanced">Складний · кілька обертів</option></select></label>
+      <button class="quiet" id="restart">Нова серія</button>
+    </div>
+    <div class="layout">
+      <div class="card circle-card">
+        <div class="card-top"><span class="eyebrow" id="circle-kind">Тригонометричне коло</span><span class="type-badge" id="type-label">Задана дуга</span></div>
+        <svg id="circle" class="circle-svg" viewBox="0 0 440 440" role="img" aria-labelledby="circle-title circle-description"><title id="circle-title">Коло для завдання</title><desc id="circle-description"></desc></svg>
+        <p class="circle-caption" id="circle-caption"></p>
+        <div class="legend"><span><i class="dot orange"></i>Початок A</span><span><i class="dot"></i>Кінець P</span><span id="turn-label"></span></div>
+      </div>
+      <div>
+        <section class="card exercise" id="exercise" aria-labelledby="task-title">
+          <div class="step-row"><span id="step">Завдання 1 із 10</span><span id="score-label">З першої спроби: 0</span></div>
+          <div class="progress" role="progressbar" aria-label="Виконано завдань" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0"><span id="progress-fill"></span></div>
+          <h2 id="task-title">Яку радіанну міру має дуга?</h2>
+          <p class="prompt-meta" id="task-meta"></p>
+          <form id="answer-form" novalidate>
+            <label class="answer-label" for="answer">Твоя відповідь</label>
+            <div class="answer-row"><input id="answer" name="answer" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="80" aria-describedby="input-help feedback-text" placeholder="Наприклад, 5π/6"><span class="unit">рад</span></div>
+            <p class="input-help" id="input-help">Можна писати π або pi: −π/3, 3*pi/2, 1,5. Десяткові відповіді — до 0,01.</p>
+            <div class="keypad" aria-label="Символи для відповіді"><button type="button" class="key" data-insert="π">π</button><button type="button" class="key" data-insert="/">/</button><button type="button" class="key" data-insert="−">−</button><button type="button" class="key" data-insert="(">(</button><button type="button" class="key" data-insert=")">)</button><button type="button" class="key small" id="clear">Очистити</button></div>
+            <div class="actions"><button class="primary" id="check" type="submit">Перевірити<span class="full-label"> відповідь</span></button><button class="text-button" id="hint-button" type="button">Підказка</button></div>
+            <button class="text-button" id="reveal" type="button">Показати розв’язання</button>
+          </form>
+          <div class="hint" id="hint" hidden></div>
+          <div class="feedback" id="feedback" role="status" aria-live="polite" aria-atomic="true" hidden><strong id="feedback-title"></strong><p id="feedback-text"></p></div>
+          <button class="primary next" id="next" hidden>Наступне завдання →</button>
+          <div class="stats"><div class="stat"><b id="completed">0</b>Виконано</div><div class="stat"><b id="streak">0</b>Правильних поспіль</div><div class="stat"><b id="best">—</b>Найкраща серія / 10</div></div>
+        </section>
+        <section class="card summary" id="summary" aria-labelledby="summary-title" hidden><span class="eyebrow">Серію завершено</span><h2 id="summary-title">Коло стало зрозумілішим</h2><div class="large-score" id="final-score"></div><p>правильних відповідей із першої спроби</p><ul id="final-details"></ul><button class="primary" id="again">Ще 10 випадкових завдань →</button><br><button class="quiet" id="go-learn">Повторити, що таке радіан</button></section>
+        <p class="note">У завданнях із точкою важливий зазначений проміжок: одна точка відповідає багатьом кутам повороту.</p>
+      </div>
+    </div>
+  </section>
+  <section id="learn" class="explain-panel" role="tabpanel" aria-labelledby="learn-tab" hidden>
+    <div class="layout">
+      <div class="card circle-card"><div class="card-top"><span class="eyebrow">Досліджуй коло</span><span class="type-badge">Дуга й радіус</span></div><svg id="learn-circle" class="circle-svg" viewBox="0 0 440 440" role="img" aria-labelledby="learn-svg-title learn-svg-description"><title id="learn-svg-title">Зв’язок кута, дуги та радіуса</title><desc id="learn-svg-description"></desc></svg><p class="circle-caption">Змінюй кут і радіус та порівнюй довжини.</p></div>
+      <div class="card explain-body"><h2>Один радіан — коли дуга дорівнює радіусу</h2><p>Відклади на колі дугу довжиною в один радіус. Центральний кут, який їй відповідає, має міру <strong>1 радіан</strong>.</p><div class="formula math">|α| = L / R</div><p>Кут у радіанах показує, скільки радіусів уміщується вздовж дуги. Знак кута задає напрям повороту; довжина дуги завжди невід’ємна.</p>
+        <div class="slider-row"><label for="angle-slider">Кут повороту α</label><output class="slider-value" id="angle-output" for="angle-slider"></output></div><input type="range" id="angle-slider" min="-628" max="628" step="1" value="100" aria-label="Кут повороту в сотих частках радіана">
+        <div class="presets"><button class="preset" data-angle="1">1 рад</button><button class="preset" data-angle="half">π/2</button><button class="preset" data-angle="pi">π</button><button class="preset" data-angle="tau">2π</button></div>
+        <div class="slider-row"><label for="radius-slider">Радіус R</label><output class="slider-value" id="radius-output" for="radius-slider"></output></div><input type="range" id="radius-slider" min="1" max="5" step="1" value="4">
+        <div class="formula math" id="length-output"></div><div class="concept"><strong>Радіус змінюється — кут залишається.</strong><p>За того самого кута збільшення радіуса вдвічі збільшує й довжину дуги вдвічі. Повне коло має довжину 2πR, тому повний оберт — 2π радіанів.</p></div><button class="primary" id="back-practice">До тренування →</button>
+      </div>
+    </div>
+  </section>
+  <footer class="footer"><span>Помилятися можна. Важливо зрозуміти, звідки береться відповідь.</span><span>Повний оберт = 2π рад · Півоберт = π рад</span></footer>
+</main>
+<script>
+'use strict';
+(() => {
+  const TAU = 2 * Math.PI, TOTAL = 10, SVG_NS = 'http://www.w3.org/2000/svg';
+  const $ = id => document.getElementById(id);
+  const gcd = (a, b) => b ? gcd(b, a % b) : Math.abs(a);
+  function fraction(n, d = 1, unit = 'pi') {
+    if (d === 0) throw new Error('Нульовий знаменник');
+    const sign = d < 0 ? -1 : 1, g = gcd(Math.abs(n), Math.abs(d)) || 1;
+    return {n: sign * n / g, d: Math.abs(d) / g, unit};
+  }
+  const value = f => f.n / f.d * (f.unit === 'pi' ? Math.PI : 1);
+  function format(f) {
+    if (!f.n) return '0';
+    const abs = Math.abs(f.n), sign = f.n < 0 ? '−' : '';
+    return sign + (f.unit === 'pi' ? (abs === 1 ? '' : abs) + 'π' : abs) + (f.d === 1 ? '' : '/' + f.d);
+  }
+  const decimal = n => n.toLocaleString('uk-UA', {maximumFractionDigits: 2});
+  function randomInt(max) {
+    if (!Number.isSafeInteger(max) || max < 1) throw new Error('Некоректна межа');
+    if (globalThis.crypto?.getRandomValues) {
+      const limit = Math.floor(4294967296 / max) * max, out = new Uint32Array(1);
+      do { crypto.getRandomValues(out); } while (out[0] >= limit);
+      return out[0] % max;
+    }
+    return Math.floor(Math.random() * max);
+  }
+  const choose = values => values[randomInt(values.length)];
+  // A small arithmetic parser, deliberately without eval or Function.
+  function parseAnswer(input) {
+    if (/\d\s+\d/.test(input)) throw new Error('Мішане число запиши як суму або десятковий дріб: 1+1/2 чи 1,5.');
+    let text = input.trim().toLowerCase().replace(/\\pi/g, 'π').replace(/pi/g, 'π').replace(/[−–]/g, '-').replace(/[×·]/g, '*').replace(/,/g, '.').replace(/\s+/g, '');
+    if (!text || text.length > 80 || /[^0-9π.+*/():-]/.test(text)) throw new Error('Введи число або вираз із π, наприклад 5π/6.');
+    const tokens = text.match(/(?:\d+(?:\.\d*)?|\.\d+)|π|[()+*/:-]/g) || [];
+    if (tokens.join('') !== text || tokens.length > 60) throw new Error('Перевір запис виразу.');
+    let pos = 0, depth = 0;
+    const peek = () => tokens[pos];
+    function atom() {
+      const token = tokens[pos++];
+      if (token === '+' || token === '-') return (token === '-' ? -1 : 1) * atom();
+      if (token === '(') {
+        if (++depth > 12) throw new Error('Забагато вкладених дужок.');
+        const result = sum();
+        if (tokens[pos++] !== ')') throw new Error('Закрий дужку у виразі.');
+        depth--; return result;
+      }
+      if (token === 'π') return Math.PI;
+      if (token && /^(?:\d+(?:\.\d*)?|\.\d+)$/.test(token)) return Number(token);
+      throw new Error('Перевір запис числа, дробу та дужок.');
+    }
+    function product() {
+      let result = atom();
+      while (pos < tokens.length) {
+        const op = peek();
+        if (op === '*' || op === '/' || op === ':') {
+          pos++; const rhs = atom();
+          if ((op === '/' || op === ':') && rhs === 0) throw new Error('На нуль ділити не можна.');
+          result = op === '*' ? result * rhs : result / rhs;
+        } else if (op === 'π' || op === '(') result *= atom();
+        else break;
+      }
+      return result;
+    }
+    function sum() {
+      let result = product();
+      while (peek() === '+' || peek() === '-') { const op = tokens[pos++], rhs = product(); result = op === '+' ? result + rhs : result - rhs; }
+      return result;
+    }
+    const result = sum();
+    if (pos !== tokens.length || !Number.isFinite(result) || Math.abs(result) > 1e6) throw new Error('Перевір запис виразу.');
+    return result;
+  }
+  const TYPES = {arc:'Задана дуга', point:'Позначена точка', length:'Довжина дуги'};
+  function makeProblem(mode, difficulty, previous = '') {
+    let p;
+    for (let trial = 0; trial < 40; trial++) {
+      const type = mode === 'mixed' ? choose(['arc','point','length']) : mode;
+      const divisions = choose(difficulty === 'basic' ? [4,8] : difficulty === 'standard' ? [6,8,12] : [10,12,16,20,24]);
+      const direction = difficulty === 'basic' ? 1 : choose([1,-1]);
+      let steps = type === 'point' ? randomInt(divisions) : 1 + randomInt(divisions);
+      let turns = 0;
+      if (difficulty === 'advanced' && type !== 'length') {
+        turns = randomInt(2);
+        steps += turns * divisions;
+      }
+      let target = fraction(2 * steps * direction, divisions);
+      const radius = choose([2,3,4,5,6]);
+      let arcLength;
+      if (type === 'length') {
+        if (randomInt(3) === 0) target = fraction(choose(difficulty === 'basic' ? [1,2] : difficulty === 'standard' ? [1,2,3,4,5] : [1,2,3,4,5,7]), choose([1,2]), 'number');
+        if (difficulty === 'advanced' && target.unit === 'pi' && randomInt(2)) target = fraction(target.n + 2 * target.d * Math.sign(target.n), target.d);
+        if (target.unit === 'number') target.n *= direction;
+        arcLength = fraction(radius * Math.abs(target.n), target.d, target.unit);
+      }
+      const angle = value(target), sign = angle < 0 ? -1 : direction;
+      p = {type, divisions, direction:sign, target, angle, radius, arcLength, turns, interval:null};
+      if (type === 'point') p.interval = sign > 0 ? [turns * TAU, (turns + 1) * TAU, true, false] : [-(turns + 1) * TAU, -turns * TAU, false, true];
+      p.signature = [type,format(target),divisions,type === 'length' ? radius : ''].join('|');
+      if (p.signature !== previous) return p;
+    }
+    return p;
+  }
+  function inInterval(answer, interval) {
+    if (!interval) return true;
+    const [lo,hi,loClosed,hiClosed] = interval;
+    // A small boundary margin accepts a value rounded to hundredths at a closed endpoint.
+    return (loClosed ? answer >= lo - .0051 : answer > lo + .0051) && (hiClosed ? answer <= hi + .0051 : answer < hi - .0051);
+  }
+  function correct(answer, p) { return Math.abs(answer - p.angle) <= .0051 && inInterval(answer, p.interval); }
+  function intervalText(p) {
+    const k = p.turns;
+    return p.direction > 0 ? `[${format(fraction(2*k))}; ${format(fraction(2*(k+1)))})` : `(${format(fraction(-2*(k+1)))}; ${format(fraction(-2*k))}]`;
+  }
+  function element(tag, attrs = {}, text) {
+    const node = document.createElementNS(SVG_NS, tag);
+    for (const [key,v] of Object.entries(attrs)) node.setAttribute(key,v);
+    if (text !== undefined) node.textContent = text;
+    return node;
+  }
+  function draw(svg, p, learning = false) {
+    svg.querySelectorAll(':scope > :not(title):not(desc)').forEach(n => n.remove());
+    const prefix = svg.id, cx = 220, cy = 220, radius = learning ? p.radius * 30 : 151;
+    const pos = (angle, r = radius) => [cx + r*Math.cos(angle), cy - r*Math.sin(angle)];
+    const defs = element('defs');
+    for (const [name,color] of [['arrow','#175b49'],['axis','#b0bdb1']]) {
+      const marker = element('marker',{id:prefix+'-'+name,viewBox:'0 0 10 10',refX:8,refY:5,markerWidth:name==='axis'?6:4,markerHeight:name==='axis'?6:4,orient:'auto-start-reverse'});
+      marker.append(element('path',{d:'M 1 1 L 9 5 L 1 9 Z',fill:color})); defs.append(marker);
+    }
+    svg.append(defs);
+    svg.append(element('line',{x1:31,y1:cy,x2:409,y2:cy,stroke:'#bdc6b9','stroke-width':1,'marker-end':`url(#${prefix}-axis)`}));
+    svg.append(element('line',{x1:cx,y1:409,x2:cx,y2:31,stroke:'#bdc6b9','stroke-width':1,'marker-end':`url(#${prefix}-axis)`}));
+    svg.append(element('circle',{cx,cy,r:radius,fill:'none',stroke:'#d6dece','stroke-width':2}));
+    const divisions = learning ? 0 : p.divisions;
+    const ticks = element('g',{'aria-hidden':'true'});
+    for (let i=0;i<divisions;i++) {
+      const a=TAU*i/divisions, q=pos(a,radius-5), r=pos(a,radius+8);
+      ticks.append(element('line',{x1:q[0],y1:q[1],x2:r[0],y2:r[1],stroke:'#91a181','stroke-width':i%(divisions/4)===0?1.8:1.4}));
+    }
+    svg.append(element('text',{x:411,y:cy-11,fill:'#7d8b7d','font-size':13,'font-family':'Georgia'},'x'));
+    svg.append(element('text',{x:cx+11,y:32,fill:'#7d8b7d','font-size':13,'font-family':'Georgia'},'y'));
+    svg.append(element('text',{x:cx-17,y:cy+20,fill:'#7d8b7d','font-size':13,'font-family':'Georgia'},'O'));
+    const endpoint = pos(p.angle), start = pos(0);
+    svg.append(element('line',{x1:cx,y1:cy,x2:start[0],y2:start[1],stroke:'#c36a36','stroke-width':2}));
+    if (p.type !== 'point') {
+      let remaining=Math.abs(p.angle), offset=0, ring=0;
+      while (remaining > 1e-9 && ring < 4) {
+        const amount=Math.min(remaining,TAU), r=radius-ring*14;
+        let d='';
+        for (let j=0;j<Math.ceil(amount/(Math.PI/32));j++) {
+          const t=Math.min(j*Math.PI/32,amount), q=pos(p.direction*(offset+t),r);
+          d+=(j?' L ':'M ')+q[0].toFixed(3)+' '+q[1].toFixed(3);
+        }
+        // Append the exact endpoint even when the angle is not a multiple of the drawing step.
+        const end=pos(p.direction*(offset+amount),r);d+=' L '+end[0]+' '+end[1];
+        svg.append(element('path',{d,fill:'none',stroke:'#175b49','stroke-width':learning?7:6,'stroke-linecap':'round','stroke-linejoin':'round','marker-end':`url(#${prefix}-arrow)`}));
+        remaining-=amount;offset+=amount;ring++;
+      }
+    }
+    svg.append(ticks);
+    svg.append(element('line',{x1:cx,y1:cy,x2:endpoint[0],y2:endpoint[1],stroke:'#175b49','stroke-width':2,'stroke-dasharray':p.type==='point'?'5 5':'none'}));
+    svg.append(element('circle',{cx:start[0],cy:start[1],r:5.5,fill:'#c36a36',stroke:'#fffefa','stroke-width':2}));
+    svg.append(element('circle',{cx:endpoint[0],cy:endpoint[1],r:6,fill:'#175b49',stroke:'#fffefa','stroke-width':2}));
+    const same=Math.hypot(endpoint[0]-start[0],endpoint[1]-start[1]) < 3;
+    const labelPoint=pos(p.angle,radius+19);
+    svg.append(element('text',{x:labelPoint[0],y:labelPoint[1]+5,fill:'#175b49','font-size':17,'font-family':'Georgia','font-style':'italic','text-anchor':Math.cos(p.angle)>.2?'start':Math.cos(p.angle)<-.2?'end':'middle'},same?'A = P':'P'));
+    if (!same) svg.append(element('text',{x:start[0]+13,y:start[1]+23,fill:'#a55e36','font-size':16,'font-family':'Georgia','font-style':'italic'},'A'));
+    if (p.type==='length' || learning) {
+      svg.append(element('text',{x:cx+radius*.45,y:cy+21,fill:'#a55e36','font-size':14,'font-family':'Georgia','text-anchor':'middle'},'R = '+p.radius));
+      svg.append(element('text',{x:cx,y:424,fill:'#175b49','font-size':17,'font-family':'Georgia','text-anchor':'middle'},'L = '+(learning?p.lengthLabel:format(p.arcLength))));
+    }
+    svg.querySelector('desc').textContent = learning ? `Кут ${p.angleLabel} радіанів, радіус ${p.radius}, довжина дуги ${p.lengthLabel}.` : p.type === 'point' ? `На колі з ${divisions} рівними поділками позначено точку P. Кут треба визначити за рисунком у вказаному проміжку.` : `На колі з ${divisions} рівними поділками виділено напрямлену дугу. Її радіанну міру треба визначити за рисунком.`;
+  }
+  let best = {};
+  try { const saved = JSON.parse(localStorage.getItem('radian-trainer-best') || '{}'); if (saved && typeof saved==='object') best=saved; } catch {}
+  const state = {problem:null,index:0,first:0,completed:0,streak:0,revealed:0,hints:0,attempts:0,settled:false,hintUsed:false,mode:'mixed',difficulty:'standard'};
+  const key = () => state.mode+'-'+state.difficulty;
+  function updateStats() {
+    $('completed').textContent=state.completed; $('streak').textContent=state.streak;
+    $('score-label').textContent='З першої спроби: '+state.first;
+    $('best').textContent=Number.isInteger(best[key()]) ? best[key()] : '—';
+    $('progress-fill').style.width=state.completed/TOTAL*100+'%';
+    document.querySelector('.progress').setAttribute('aria-valuenow',state.completed);
+  }
+  function showProblem(focus = false) {
+    const previous=state.problem?.signature || '';
+    state.problem=makeProblem(state.mode,state.difficulty,previous); state.attempts=0;state.settled=false;state.hintUsed=false;
+    const p=state.problem;
+    $('circle-kind').textContent=p.type==='length'?'Коло й довжина дуги':'Тригонометричне коло';
+    $('type-label').textContent=TYPES[p.type];$('step').textContent=`Завдання ${state.index+1} із ${TOTAL}`;
+    $('task-title').textContent=p.type==='point'?'Який поворот приводить у точку P?':p.type==='length'?'Який кут відповідає цій дузі?':'Яку радіанну міру має дуга?';
+    $('task-meta').replaceChildren();
+    if (p.type==='point') {
+      $('task-meta').append(document.createTextNode('Відраховуй кут від A(1; 0). Подай відповідь у проміжку '));
+      const range=document.createElement('span');range.className='constraint math';range.textContent=intervalText(p)+' рад';$('task-meta').append(range);
+    } else if (p.type==='length') $('task-meta').textContent=`Радіус R = ${p.radius} см, довжина дуги L = ${format(p.arcLength)} см. Урахуй зазначений напрям повороту.`;
+    else $('task-meta').textContent='Почни в точці A та рухайся вздовж зеленої дуги за стрілкою. Урахуй усі повні оберти.';
+    $('circle-caption').textContent=`Коло поділено на ${p.divisions} рівних частин.`+(Math.abs(p.angle)>TAU+1e-9 && p.type!=='point'?' Кожна повна смуга — один оберт.':'');
+    $('turn-label').textContent=(p.direction>0?'↺ Проти':'↻ За')+' годинниковою';
+    $('answer').value='';$('answer').disabled=false;$('answer').removeAttribute('aria-invalid');
+    $('check').disabled=false;$('hint-button').disabled=false;$('reveal').disabled=false;
+    document.querySelectorAll('.key').forEach(b=>b.disabled=false);
+    for (const id of ['feedback','hint','next']) $(id).hidden=true;
+    $('next').textContent=state.index===TOTAL-1?'Підсумок серії →':'Наступне завдання →';
+    draw($('circle'),p);updateStats();if(focus)$('answer').focus();
+  }
+  function feedback(kind,title,text) {
+    $('feedback').className='feedback '+kind;$('feedback').hidden=false;
+    $('feedback-title').textContent=title;$('feedback-text').textContent=text;
+  }
+  function explanation(p) {
+    const sign=p.angle<0?'За годинниковою стрілкою кут від’ємний.':'Проти годинникової стрілки кут додатний.';
+    if (p.type==='length') return `|α| = L/R = (${format(p.arcLength)})/${p.radius} = ${format(fraction(Math.abs(p.target.n),p.target.d,p.target.unit))} рад. ${sign} Отже, α = ${format(p.target)} рад.`;
+    const totalSteps=Math.round(Math.abs(p.angle)/TAU*p.divisions), turns=Math.floor(totalSteps/p.divisions), part=totalSteps%p.divisions;
+    if (p.angle===0) return `Точка P збігається з A. У проміжку ${intervalText(p)} цьому відповідає кут 0 рад.`;
+    return `Одна поділка: 2π/${p.divisions} рад. ${turns ? 'Повних обертів: '+turns+'; решта поділок: '+part+'. ' : 'Від A до P за заданим напрямом — '+part+' поділок. '}${sign} α = ${format(p.target)} рад.`;
+  }
+  function settle(revealed=false) {
+    if(state.settled)return;state.settled=true;state.completed++;
+    if(revealed){state.revealed++;state.streak=0;}
+    else if(state.attempts===1){state.first++;state.streak++;}
+    $('answer').disabled=true;$('check').disabled=true;$('hint-button').disabled=true;$('reveal').disabled=true;
+    document.querySelectorAll('.key').forEach(b=>b.disabled=true);
+    $('next').hidden=false;updateStats();
+  }
+  $('answer-form').addEventListener('submit',event=>{
+    event.preventDefault();if(state.settled)return;
+    let answer;
+    try{answer=parseAnswer($('answer').value);}catch(error){feedback('invalid','Перевір запис відповіді',error.message);$('answer').setAttribute('aria-invalid','true');return;}
+    state.attempts++;$('answer').removeAttribute('aria-invalid');
+    if(correct(answer,state.problem)){feedback('','Правильно! '+format(state.problem.target)+' рад',explanation(state.problem));settle();}
+    else {
+      state.streak=0;updateStats();$('answer').setAttribute('aria-invalid','true');
+      const p=state.problem;
+      let message='Повний оберт — 2π рад. Перевір кількість поділок і напрям повороту.';
+      if(p.type==='length')message='Поділи довжину дуги на радіус та врахуй знак повороту.';
+      if(p.interval && !inInterval(answer,p.interval))message='Твоя відповідь поза заданим проміжком '+intervalText(p)+'. Одна точка може відповідати кільком кутам — обери потрібний.';
+      feedback('wrong','Спробуй ще раз',message);$('answer').focus();$('answer').select();
+    }
+  });
+  $('hint-button').addEventListener('click',()=>{
+    if(state.settled)return;if(!state.hintUsed){state.hints++;state.hintUsed=true;}
+    const p=state.problem;
+    $('hint').textContent=p.type==='length'?'Радіанна міра за модулем дорівнює L/R. Довжину дуги й радіус виміряно в однакових одиницях.':`У повному колі 2π радіанів і ${p.divisions} рівних поділок. Отже, одна поділка має міру 2π/${p.divisions}. Порахуй поділки за вказаним напрямом.`;
+    $('hint').hidden=false;
+  });
+  $('reveal').addEventListener('click',()=>{if(state.settled)return;feedback('','Розв’язання: '+format(state.problem.target)+' рад',explanation(state.problem));settle(true);});
+  $('next').addEventListener('click',()=>{
+    if(!state.settled)return;
+    if(state.index===TOTAL-1){finish();return;}
+    state.index++;showProblem(true);
+  });
+  function finish(){
+    best[key()]=Math.max(Number.isInteger(best[key()])?best[key()]:0,state.first);
+    try{localStorage.setItem('radian-trainer-best',JSON.stringify(best));}catch{}
+    $('exercise').hidden=true;$('summary').hidden=false;$('final-score').textContent=state.first+' / '+TOTAL;
+    $('summary-title').textContent=state.first>=8?'Чудово орієнтуєшся на колі':state.first>=5?'Ще трохи — і коло підкориться':'Повтори правило й спробуй знову';
+    $('final-details').replaceChildren();
+    for(const text of [`Правильно після повторної спроби: ${TOTAL-state.first-state.revealed}`,`Переглянуто розв’язань: ${state.revealed}`,`Завдань із підказкою: ${state.hints}`]){const li=document.createElement('li');li.textContent=text;$('final-details').append(li);}
+    updateStats();$('again').focus();
+  }
+  function restart(focus=false){Object.assign(state,{problem:null,index:0,first:0,completed:0,streak:0,revealed:0,hints:0,attempts:0,settled:false,hintUsed:false,mode:$('mode').value,difficulty:$('difficulty').value});$('summary').hidden=true;$('exercise').hidden=false;showProblem(focus);}
+  $('restart').addEventListener('click',()=>restart(true));$('again').addEventListener('click',()=>restart(true));
+  $('mode').addEventListener('change',()=>restart());$('difficulty').addEventListener('change',()=>restart());
+  document.querySelectorAll('[data-insert]').forEach(button=>button.addEventListener('click',()=>{
+    const input=$('answer');if(input.disabled)return;
+    const from=input.selectionStart ?? input.value.length,to=input.selectionEnd ?? from;
+    if(input.value.length-(to-from)+button.dataset.insert.length>80)return;
+    input.setRangeText(button.dataset.insert,from,to,'end');input.focus();
+  }));
+  $('clear').addEventListener('click',()=>{if(!$('answer').disabled){$('answer').value='';$('answer').focus();}});
+  function tab(learn){
+    $('practice').hidden=learn;$('learn').hidden=!learn;
+    for(const [id,selected] of [['practice-tab',!learn],['learn-tab',learn]]){$(id).setAttribute('aria-selected',selected);$(id).tabIndex=selected?0:-1;}
+    if(learn)renderLearning();
+  }
+  $('practice-tab').addEventListener('click',()=>tab(false));$('learn-tab').addEventListener('click',()=>tab(true));
+  document.querySelector('[role=tablist]').addEventListener('keydown',event=>{
+    if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;
+    event.preventDefault();const learn=event.key==='Home'?false:event.key==='End'?true:$('learn').hidden;tab(learn);$(learn?'learn-tab':'practice-tab').focus();
+  });
+  $('go-learn').addEventListener('click',()=>{tab(true);$('learn-tab').focus();});$('back-practice').addEventListener('click',()=>{tab(false);$('practice-tab').focus();});
+  let learningAngle=1,learningExact=null;
+  function renderLearning(){
+    const radius=Number($('radius-slider').value), angleLabel=learningExact?format(learningExact):decimal(learningAngle);
+    const lengthLabel=learningExact?format(fraction(Math.abs(learningExact.n)*radius,learningExact.d,learningExact.unit)):decimal(Math.abs(learningAngle)*radius);
+    $('angle-output').textContent=angleLabel+' рад';$('radius-output').textContent=radius;$('length-output').textContent=`L = R · |α| = ${lengthLabel}`;
+    $('angle-slider').setAttribute('aria-valuetext',angleLabel+' радіанів');
+    draw($('learn-circle'),{type:'length',angle:learningAngle,direction:learningAngle<0?-1:1,radius,angleLabel,lengthLabel},true);
+  }
+  $('angle-slider').addEventListener('input',()=>{learningAngle=Number($('angle-slider').value)/100;learningExact=null;renderLearning();});
+  $('radius-slider').addEventListener('input',renderLearning);
+  document.querySelectorAll('[data-angle]').forEach(button=>button.addEventListener('click',()=>{
+    const f=button.dataset.angle;learningExact=f==='1'?fraction(1,1,'number'):f==='half'?fraction(1,2):f==='pi'?fraction(1):fraction(2);
+    learningAngle=value(learningExact);$('angle-slider').value=Math.round(learningAngle*100);renderLearning();
+  }));
+  // The math helpers are also used by the offline browser tests.
+  window.RadianTrainer=Object.freeze({parseAnswer,makeProblem,correct,inInterval,format,value,fraction});
+  restart();renderLearning();
+})();
+</script>
+</body>
+</html>
