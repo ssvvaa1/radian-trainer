@@ -63,12 +63,12 @@
   </section>
   <section id="learn" class="explain-panel" role="tabpanel" aria-labelledby="learn-tab" hidden>
     <div class="layout">
-      <div class="card circle-card"><div class="card-top"><span class="eyebrow">Досліджуй коло</span><span class="type-badge">Дуга й радіус</span></div><svg id="learn-circle" class="circle-svg" viewBox="0 0 440 440" role="img" aria-labelledby="learn-svg-title learn-svg-description"><title id="learn-svg-title">Зв’язок кута, дуги та радіуса</title><desc id="learn-svg-description"></desc></svg><p class="circle-caption">Змінюй кут і радіус та порівнюй довжини.</p></div>
-      <div class="card explain-body"><h2>Один радіан — коли дуга дорівнює радіусу</h2><p>Відклади на колі дугу довжиною в один радіус. Центральний кут, який їй відповідає, має міру <strong>1 радіан</strong>.</p><div class="formula math">|α| = L / R</div><p>Кут у радіанах показує, скільки радіусів уміщується вздовж дуги. Знак кута задає напрям повороту; довжина дуги завжди невід’ємна.</p>
+      <div class="card circle-card"><div class="card-top"><span class="eyebrow">Досліджуй одиничне коло</span><span class="type-badge">R = 1</span></div><svg id="learn-circle" class="circle-svg" viewBox="0 0 440 440" role="img" aria-labelledby="learn-svg-title learn-svg-description"><title id="learn-svg-title">Кут і довжина дуги на одиничному колі</title><desc id="learn-svg-description"></desc></svg><p class="circle-caption">Змінюй кут і спостерігай, як змінюється довжина дуги.</p></div>
+      <div class="card explain-body"><h2>Один радіан — дуга довжиною 1</h2><p>На одиничному колі радіус дорівнює <strong>1</strong>. Дузі довжиною 1 відповідає центральний кут <strong>1 радіан</strong>.</p><div class="formula math">|α| = L / 1 = L</div><p>На одиничному колі радіанна міра кута за модулем чисельно дорівнює довжині дуги. Знак кута задає напрям повороту; довжина дуги завжди невід’ємна.</p>
         <div class="slider-row"><label for="angle-slider">Кут повороту α</label><output class="slider-value" id="angle-output" for="angle-slider"></output></div><input type="range" id="angle-slider" min="-628" max="628" step="1" value="100" aria-label="Кут повороту в сотих частках радіана">
         <div class="presets"><button class="preset" data-angle="1">1 рад</button><button class="preset" data-angle="half">π/2</button><button class="preset" data-angle="pi">π</button><button class="preset" data-angle="tau">2π</button></div>
-        <div class="slider-row"><label for="radius-slider">Радіус R</label><output class="slider-value" id="radius-output" for="radius-slider"></output></div><input type="range" id="radius-slider" min="1" max="5" step="1" value="4">
-        <div class="formula math" id="length-output"></div><div class="concept"><strong>Радіус змінюється — кут залишається.</strong><p>За того самого кута збільшення радіуса вдвічі збільшує й довжину дуги вдвічі. Повне коло має довжину 2πR, тому повний оберт — 2π радіанів.</p></div><button class="primary" id="back-practice">До тренування →</button>
+        <div class="slider-row"><span>Радіус R</span><span class="slider-value" id="radius-output">1</span></div>
+        <div class="formula math" id="length-output"></div><div class="concept"><strong>Повне одиничне коло — 2π.</strong><p>Довжина одиничного кола дорівнює 2π. Тому повний оберт — 2π радіанів, а півоберт — π радіанів.</p></div><button class="primary" id="back-practice">До тренування →</button>
       </div>
     </div>
   </section>
@@ -160,7 +160,7 @@
         steps += turns * divisions;
       }
       let target = fraction(2 * steps * direction, divisions);
-      const radius = choose([2,3,4,5,6]);
+      const radius = 1;
       let arcLength;
       if (type === 'length') {
         if (randomInt(3) === 0) target = fraction(choose(difficulty === 'basic' ? [1,2] : difficulty === 'standard' ? [1,2,3,4,5] : [1,2,3,4,5,7]), choose([1,2]), 'number');
@@ -195,7 +195,7 @@
   }
   function draw(svg, p, learning = false) {
     svg.querySelectorAll(':scope > :not(title):not(desc)').forEach(n => n.remove());
-    const prefix = svg.id, cx = 220, cy = 220, radius = learning ? p.radius * 30 : 151;
+    const prefix = svg.id, cx = 220, cy = 220, radius = 151;
     const pos = (angle, r = radius) => [cx + r*Math.cos(angle), cy - r*Math.sin(angle)];
     const defs = element('defs');
     for (const [name,color] of [['arrow','#175b49'],['axis','#b0bdb1']]) {
@@ -240,8 +240,8 @@
     const labelPoint=pos(p.angle,radius+19);
     svg.append(element('text',{x:labelPoint[0],y:labelPoint[1]+5,fill:'#175b49','font-size':17,'font-family':'Georgia','font-style':'italic','text-anchor':Math.cos(p.angle)>.2?'start':Math.cos(p.angle)<-.2?'end':'middle'},same?'A = P':'P'));
     if (!same) svg.append(element('text',{x:start[0]+13,y:start[1]+23,fill:'#a55e36','font-size':16,'font-family':'Georgia','font-style':'italic'},'A'));
+    svg.append(element('text',{x:cx+radius*.45,y:cy+21,fill:'#a55e36','font-size':14,'font-family':'Georgia','text-anchor':'middle'},'R = 1'));
     if (p.type==='length' || learning) {
-      svg.append(element('text',{x:cx+radius*.45,y:cy+21,fill:'#a55e36','font-size':14,'font-family':'Georgia','text-anchor':'middle'},'R = '+p.radius));
       svg.append(element('text',{x:cx,y:424,fill:'#175b49','font-size':17,'font-family':'Georgia','text-anchor':'middle'},'L = '+(learning?p.lengthLabel:format(p.arcLength))));
     }
     svg.querySelector('desc').textContent = learning ? `Кут ${p.angleLabel} радіанів, радіус ${p.radius}, довжина дуги ${p.lengthLabel}.` : p.type === 'point' ? `На колі з ${divisions} рівними поділками позначено точку P. Кут треба визначити за рисунком у вказаному проміжку.` : `На колі з ${divisions} рівними поділками виділено напрямлену дугу. Її радіанну міру треба визначити за рисунком.`;
@@ -308,7 +308,7 @@
       state.streak=0;updateStats();$('answer').setAttribute('aria-invalid','true');
       const p=state.problem;
       let message='Повний оберт — 2π рад. Перевір кількість поділок і напрям повороту.';
-      if(p.type==='length')message='Поділи довжину дуги на радіус та врахуй знак повороту.';
+      if(p.type==='length')message='На одиничному колі R = 1, тому |α| = L. Урахуй знак повороту.';
       if(p.interval && !inInterval(answer,p.interval))message='Твоя відповідь поза заданим проміжком '+intervalText(p)+'. Одна точка може відповідати кільком кутам — обери потрібний.';
       feedback('wrong','Спробуй ще раз',message);$('answer').focus();$('answer').select();
     }
@@ -316,7 +316,7 @@
   $('hint-button').addEventListener('click',()=>{
     if(state.settled)return;if(!state.hintUsed){state.hints++;state.hintUsed=true;}
     const p=state.problem;
-    $('hint').textContent=p.type==='length'?'Радіанна міра за модулем дорівнює L/R. Довжину дуги й радіус виміряно в однакових одиницях.':`У повному колі 2π радіанів і ${p.divisions} рівних поділок. Отже, одна поділка має міру 2π/${p.divisions}. Порахуй поділки за вказаним напрямом.`;
+    $('hint').textContent=p.type==='length'?'На одиничному колі радіус R = 1. Тому |α| = L/R = L. Залишається врахувати напрям повороту.':`У повному колі 2π радіанів і ${p.divisions} рівних поділок. Отже, одна поділка має міру 2π/${p.divisions}. Порахуй поділки за вказаним напрямом.`;
     $('hint').hidden=false;
   });
   $('reveal').addEventListener('click',()=>{if(state.settled)return;feedback('','Розв’язання: '+format(state.problem.target)+' рад',explanation(state.problem));settle(true);});
@@ -357,14 +357,13 @@
   $('go-learn').addEventListener('click',()=>{tab(true);$('learn-tab').focus();});$('back-practice').addEventListener('click',()=>{tab(false);$('practice-tab').focus();});
   let learningAngle=1,learningExact=null;
   function renderLearning(){
-    const radius=Number($('radius-slider').value), angleLabel=learningExact?format(learningExact):decimal(learningAngle);
+    const radius=1, angleLabel=learningExact?format(learningExact):decimal(learningAngle);
     const lengthLabel=learningExact?format(fraction(Math.abs(learningExact.n)*radius,learningExact.d,learningExact.unit)):decimal(Math.abs(learningAngle)*radius);
-    $('angle-output').textContent=angleLabel+' рад';$('radius-output').textContent=radius;$('length-output').textContent=`L = R · |α| = ${lengthLabel}`;
+    $('angle-output').textContent=angleLabel+' рад';$('length-output').textContent=`L = |α| = ${lengthLabel}`;
     $('angle-slider').setAttribute('aria-valuetext',angleLabel+' радіанів');
     draw($('learn-circle'),{type:'length',angle:learningAngle,direction:learningAngle<0?-1:1,radius,angleLabel,lengthLabel},true);
   }
   $('angle-slider').addEventListener('input',()=>{learningAngle=Number($('angle-slider').value)/100;learningExact=null;renderLearning();});
-  $('radius-slider').addEventListener('input',renderLearning);
   document.querySelectorAll('[data-angle]').forEach(button=>button.addEventListener('click',()=>{
     const f=button.dataset.angle;learningExact=f==='1'?fraction(1,1,'number'):f==='half'?fraction(1,2):f==='pi'?fraction(1):fraction(2);
     learningAngle=value(learningExact);$('angle-slider').value=Math.round(learningAngle*100);renderLearning();
