@@ -15,6 +15,7 @@
 .settings{grid-template-columns:minmax(0,1fr) minmax(0,1fr) 120px auto}.settings input[type=number]{width:100%;min-height:46px;padding:11px 12px;border:1px solid var(--line);background:var(--white);color:var(--ink)}.count-error{color:var(--red);font-size:12px;margin:6px 0 0}.reference-note{font-size:11px;color:var(--muted);text-align:center;margin:0 0 12px}@media(max-width:780px){.settings{grid-template-columns:repeat(2,minmax(0,1fr))}.settings .quiet{grid-column:auto}}@media(max-width:520px){.settings{grid-template-columns:minmax(0,1fr)}}
 .dot.target{width:12px;height:12px;background:#ffb300;border:2px solid #592aa6;vertical-align:-1px}.count-help{display:block;font-size:11px;color:var(--muted);margin-top:5px}.count-error{display:block}
 .settings{align-items:start}.settings>.quiet{margin-top:24px}@media(max-width:520px){.settings>.quiet{margin-top:0}}
+.selection-status{padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:#f0f3e7;margin-bottom:16px;font-size:14px}#circle.picking{cursor:crosshair;touch-action:manipulation}.point-choice{cursor:pointer}.point-choice:focus-visible{outline:none}.point-choice:focus-visible [data-role=choice-dot]{stroke:#592aa6;stroke-width:3;fill:#ffe18a}
 </style>
 </head>
 <body>
@@ -30,7 +31,7 @@
   </div>
   <section id="practice" role="tabpanel" aria-labelledby="practice-tab">
     <div class="settings">
-      <label><span class="field-label">Тип завдань</span><select id="mode"><option value="mixed">Змішане тренування</option><option value="arc">Дуга → радіанна міра</option><option value="point">Точка → кут повороту</option></select></label>
+      <label><span class="field-label">Тип завдань</span><select id="mode"><option value="mixed">Змішане тренування</option><option value="arc">Дуга → радіанна міра</option><option value="point">Точка → кут повороту</option><option value="degrees">Радіани → градуси</option><option value="radians">Градуси → радіани</option><option value="locate">Кут → точка на колі</option></select></label>
       <label><span class="field-label">Складність</span><select id="difficulty"><option value="basic">Початковий · додатні кути</option><option value="standard" selected>Середній · обидва напрями</option><option value="advanced">Складний · кілька обертів</option></select></label>
       <label><span class="field-label">Кількість завдань</span><input id="question-count" type="number" inputmode="numeric" min="1" max="100" step="1" value="12" aria-describedby="count-help count-error"><span class="count-help" id="count-help"></span><span class="count-error" id="count-error" role="alert" hidden></span></label>
       <button class="quiet" id="restart">Нова серія</button>
@@ -41,7 +42,7 @@
         <svg id="circle" class="circle-svg" viewBox="0 0 440 440" role="img" aria-labelledby="circle-title circle-description"><title id="circle-title">Коло для завдання</title><desc id="circle-description"></desc></svg>
         <p class="circle-caption" id="circle-caption"></p>
         <p class="reference-note">Рожеві точки — опорні кути, сині — проєкції на осі.</p>
-        <div class="legend"><span><i class="dot orange"></i>Початок A</span><span><i class="dot target"></i>Кінець P</span><span id="turn-label"></span></div>
+        <div class="legend"><span><i class="dot orange"></i>Початок A</span><span id="target-legend"><i class="dot target"></i>Кінець P</span><span id="turn-label"></span></div>
       </div>
       <div>
         <section class="card exercise" id="exercise" aria-labelledby="task-title">
@@ -50,8 +51,9 @@
           <h2 id="task-title">Яку радіанну міру має дуга?</h2>
           <p class="prompt-meta" id="task-meta"></p>
           <form id="answer-form" novalidate>
+            <div id="numeric-entry">
             <label class="answer-label" for="answer">Твоя відповідь</label>
-            <div class="answer-row"><input id="answer" name="answer" type="text" inputmode="none" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="80" aria-describedby="input-help feedback-text" placeholder="Наприклад, 5π/6"><span class="unit">рад</span></div>
+            <div class="answer-row"><input id="answer" name="answer" type="text" inputmode="none" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="80" aria-describedby="input-help feedback-text" placeholder="Наприклад, 5π/6"><span class="unit" id="answer-unit">рад</span></div>
             <p class="input-help" id="input-help">Можна писати π або pi: −π/3, 3*pi/2, 1,5. Десяткові відповіді — до 0,01.</p>
             <div class="keypad" role="group" aria-label="Екранна клавіатура для відповіді">
               <button type="button" class="key" data-insert="7">7</button><button type="button" class="key" data-insert="8">8</button><button type="button" class="key" data-insert="9">9</button><button type="button" class="key" id="backspace" aria-label="Видалити попередній символ" title="Видалити символ"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M9 5H21V19H9L3 12Z M12 9l6 6m0-6l-6 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></button>
@@ -60,6 +62,8 @@
               <button type="button" class="key" data-insert="0">0</button><button type="button" class="key" data-insert=",">,</button><button type="button" class="key" data-insert="−">−</button><button type="button" class="key" data-insert="+">+</button>
               <button type="button" class="key" data-insert="(">(</button><button type="button" class="key" data-insert=")">)</button><button type="button" class="key" data-insert="*" aria-label="Помножити">×</button><button type="button" class="key small" id="clear">Очистити</button>
             </div>
+            </div>
+            <div id="selection-status" class="selection-status" role="status" aria-live="polite" hidden></div>
             <div class="actions"><button class="primary" id="check" type="submit">Перевірити<span class="full-label"> відповідь</span></button><button class="text-button" id="hint-button" type="button">Підказка</button></div>
             <button class="text-button" id="reveal" type="button">Показати розв’язання</button>
           </form>
@@ -158,20 +162,23 @@
     if (pos !== tokens.length || !Number.isFinite(result) || Math.abs(result) > 1e6) throw new Error('Перевір запис виразу.');
     return result;
   }
-  const TYPES = {arc:'Задана дуга', point:'Позначена точка'};
+  const TYPES = {arc:'Задана дуга',point:'Позначена точка',degrees:'Радіани → градуси',radians:'Градуси → радіани',locate:'Вибір точки'};
+  const degreeLabel=p=>decimal(p.degrees);
+  const expectedValue=p=>p.type==='degrees'?p.degrees:p.type==='locate'?p.answerIndex:p.angle;
   const poolCache=new Map();
   function problemGroups(mode,difficulty) {
-    if(!['mixed','arc','point'].includes(mode))throw new Error('Невідомий тип завдання.');
+    if(mode!=='mixed' && !Object.hasOwn(TYPES,mode))throw new Error('Невідомий тип завдання.');
     if(!['basic','standard','advanced'].includes(difficulty))throw new Error('Невідомий рівень.');
     const cacheKey=mode+'|'+difficulty;if(poolCache.has(cacheKey))return poolCache.get(cacheKey);
-    const groups=new Map(),types=mode==='mixed'?['arc','point']:[mode];
+    const groups=new Map(),types=mode==='mixed'?Object.keys(TYPES):[mode];
     const divisions=difficulty==='basic'?[4,8]:difficulty==='standard'?[6,8,12]:[10,12,16,20,24];
     for(const type of types)for(const parts of divisions)for(const direction of difficulty==='basic'?[1]:[1,-1])for(const turns of difficulty==='advanced'?[0,1]:[0]) {
-      for(let step=type==='point'?0:1;step<=(type==='point'?parts-1:parts);step++) {
+      for(let step=type==='arc'?1:0;step<=(type==='point'?parts-1:parts);step++) {
         const target=Object.freeze(fraction(2*(step+turns*parts)*direction,parts));
         const angle=value(target),signature=target.n+'/'+target.d;
         const interval=type!=='point'?null:Object.freeze(direction>0?[turns*TAU,(turns+1)*TAU,true,false]:[-(turns+1)*TAU,-turns*TAU,false,true]);
-        const p=Object.freeze({type,divisions:parts,direction,target,angle,radius:1,turns,interval,signature});
+        const degrees=180*target.n/target.d,answerIndex=((direction*(step+turns*parts))%parts+parts)%parts;
+        const p=Object.freeze({type,divisions:parts,direction,target,angle,degrees,answerIndex,radius:1,turns,interval,signature});
         if(!groups.has(signature))groups.set(signature,[]);groups.get(signature).push(p);
       }
     }
@@ -187,7 +194,15 @@
     const groups=[...problemGroups(mode,difficulty)];
     if(!Number.isSafeInteger(total)||total<1||total>Math.min(100,groups.length))throw new RangeError('Недостатньо різних кутів для такої серії.');
     for(let i=groups.length-1;i>0;i--){const j=randomInt(i+1);[groups[i],groups[j]]=[groups[j],groups[i]];}
-    return groups.slice(0,total).map(group=>choose(group));
+    const selected=groups.slice(0,total),quiz=selected.map(group=>choose(group));
+    if(mode==='mixed' && total>=Object.keys(TYPES).length){
+      const assigned=new Set();
+      for(const type of ['point','arc','degrees','radians','locate']){
+        const options=selected.map((group,i)=>i).filter(i=>!assigned.has(i)&&selected[i].some(p=>p.type===type));
+        const index=choose(options);assigned.add(index);quiz[index]=choose(selected[index].filter(p=>p.type===type));
+      }
+    }
+    return quiz;
   }
   function inInterval(answer, interval) {
     if (!interval) return true;
@@ -195,7 +210,7 @@
     // A small boundary margin accepts a value rounded to hundredths at a closed endpoint.
     return (loClosed ? answer >= lo - .0051 : answer > lo + .0051) && (hiClosed ? answer <= hi + .0051 : answer < hi - .0051);
   }
-  function correct(answer, p) { return Math.abs(answer - p.angle) <= .0051 && inInterval(answer, p.interval); }
+  function correct(answer,p){if(!Number.isFinite(answer))return false;if(p.type==='locate')return Number.isInteger(answer)&&answer===p.answerIndex;return Math.abs(answer-expectedValue(p))<=.0051&&inInterval(answer,p.interval);}
   function intervalText(p) {
     const k = p.turns;
     return p.direction > 0 ? `[${format(fraction(2*k))}; ${format(fraction(2*(k+1)))})` : `(${format(fraction(-2*(k+1)))}; ${format(fraction(-2*k))}]`;
@@ -213,11 +228,11 @@
     const addLine=(parent,a,b,attrs={})=>parent.append(element('line',{x1:a[0],y1:a[1],x2:b[0],y2:b[1],...attrs}));
     const defs=element('defs');
     for (const [name,color] of [['arrow','#175b49'],['axis','#111111']]) {
-      const marker=element('marker',{id:prefix+'-'+name,viewBox:'0 0 10 10',refX:8,refY:5,markerWidth:name==='axis'?6:4,markerHeight:name==='axis'?6:4,orient:'auto-start-reverse'});
+      const marker=element('marker',{id:prefix+'-'+name,viewBox:'0 0 10 10',refX:8,refY:5,markerWidth:name==='axis'?7:13,markerHeight:name==='axis'?7:13,markerUnits:'userSpaceOnUse',orient:'auto-start-reverse'});
       marker.append(element('path',{d:'M 1 1 L 9 5 L 1 9 Z',fill:color}));defs.append(marker);
     }
     svg.append(defs);
-    const guides=element('g',{'data-role':'guides',stroke:'#111111','stroke-width':.8,opacity:.78,'aria-hidden':'true'});
+    const guides=element('g',{'data-role':'guides',stroke:'#111111','stroke-width':.55,opacity:.56,'aria-hidden':'true'});
     const levels=[.5,Math.SQRT1_2,Math.sqrt(3)/2];
     for (const level of levels) for (const sign of [-1,1]) {
       const z=level*sign, end=Math.sqrt(1-z*z);
@@ -230,13 +245,17 @@
       addLine(guides,[cx,cy],pos(angle),{'data-role':'reference-ray'});
     }
     svg.append(guides);
-    addLine(svg,[31,cy],[409,cy],{stroke:'#111111','stroke-width':1.6,'marker-end':`url(#${prefix}-axis)`,'data-role':'axis'});
-    addLine(svg,[cx,409],[cx,31],{stroke:'#111111','stroke-width':1.6,'marker-end':`url(#${prefix}-axis)`,'data-role':'axis'});
-    svg.append(element('circle',{cx,cy,r:radius,fill:'none',stroke:'#111111','stroke-width':4,'data-role':'unit-circle'}));
+    addLine(svg,[31,cy],[409,cy],{stroke:'#111111','stroke-width':1.15,'marker-end':`url(#${prefix}-axis)`,'data-role':'axis'});
+    addLine(svg,[cx,409],[cx,31],{stroke:'#111111','stroke-width':1.15,'marker-end':`url(#${prefix}-axis)`,'data-role':'axis'});
+    svg.append(element('circle',{cx,cy,r:radius,fill:'none',stroke:'#111111','stroke-width':2.3,'data-role':'unit-circle'}));
     svg.append(element('text',{x:411,y:cy+19,fill:'#111111','font-size':20,'font-family':'Georgia','font-style':'italic','font-weight':'bold'},'x'));
     svg.append(element('text',{x:cx-17,y:32,fill:'#111111','font-size':20,'font-family':'Georgia','font-style':'italic','font-weight':'bold'},'y'));
-    const endpoint=pos(p.angle),start=pos(0);
-    if (p.type==='arc' || learning) {
+    const solved=!learning&&state.settled,locating=!learning&&p.type==='locate';
+    const numericConversion=['degrees','radians'].includes(p.type);
+    const markedAngle=locating&&!solved?(state.choice===null?null:TAU*state.choice/p.divisions):numericConversion&&!solved?null:p.angle;
+    const endpoint=markedAngle===null?null:pos(markedAngle),start=pos(0);
+    const arrows=element('g',{'data-role':'direction-arrows'});
+    if (p.type==='arc' || learning || solved) {
       let remaining=Math.abs(p.angle),offset=0,ring=0;
       while(remaining>1e-9 && ring<4) {
         const amount=Math.min(remaining,TAU),r=radius-ring*14;let d='';
@@ -245,34 +264,60 @@
           d+=(j?' L ':'M ')+point[0].toFixed(3)+' '+point[1].toFixed(3);
         }
         const end=pos(p.direction*(offset+amount),r);d+=' L '+end[0]+' '+end[1];
-        svg.append(element('path',{d,fill:'none',stroke:'#175b49','stroke-width':7,'stroke-linecap':'round','stroke-linejoin':'round','marker-end':`url(#${prefix}-arrow)`,'data-role':'task-arc'}));
+        svg.append(element('path',{d,fill:'none',stroke:'#175b49','stroke-width':4.2,'stroke-linecap':'round','stroke-linejoin':'round','data-role':'task-arc'}));
+        if(amount>=.12){
+          const gap=Math.min(.18,amount*.4),span=Math.min(.12,amount*.35),from=offset+amount-gap-span;
+          let arrowD='';for(let j=0;j<=8;j++){const pt=pos(p.direction*(from+span*j/8),r);arrowD+=(j?' L ':'M ')+pt[0]+' '+pt[1];}
+          const tip=pos(p.direction*(offset+amount-gap),r);
+          arrows.append(element('path',{d:arrowD,fill:'none',stroke:'#175b49','stroke-width':2.5,'marker-end':`url(#${prefix}-arrow)`,'data-role':'direction-arrow','data-tip-x':tip[0],'data-tip-y':tip[1]}));
+        }
         remaining-=amount;offset+=amount;ring++;
       }
     }
     const divisions=learning?0:p.divisions;
     const ticks=element('g',{'aria-hidden':'true','data-role':'division-ticks'});
-    for(let i=0;i<divisions;i++)addLine(ticks,pos(TAU*i/divisions,radius-4),pos(TAU*i/divisions,radius+7),{stroke:'#557085','stroke-width':1.25});
+    for(let i=0;i<divisions;i++)addLine(ticks,pos(TAU*i/divisions,radius-4),pos(TAU*i/divisions,radius+7),{stroke:'#70818e','stroke-width':.9});
     svg.append(ticks);
     const marks=element('g',{'aria-hidden':'true','data-role':'reference-points'});
-    for(const angle of referenceAngles){const point=pos(angle);marks.append(element('circle',{cx:point[0],cy:point[1],r:3.5,fill:'#ee4d83','data-role':'reference-point'}));}
-    for(let i=0;i<4;i++){const point=pos(i*Math.PI/2);marks.append(element('circle',{cx:point[0],cy:point[1],r:5.5,fill:'#16d428','data-role':'axis-point'}));}
-    for(const level of levels)for(const sign of [-1,1])for(const point of [[cx+level*sign*radius,cy],[cx,cy-level*sign*radius]])marks.append(element('circle',{cx:point[0],cy:point[1],r:2.8,fill:'#164cdb','data-role':'projection-point'}));
+    for(const angle of referenceAngles){const point=pos(angle);marks.append(element('circle',{cx:point[0],cy:point[1],r:2.7,fill:'#ee4d83','data-role':'reference-point'}));}
+    for(let i=0;i<4;i++){const point=pos(i*Math.PI/2);marks.append(element('circle',{cx:point[0],cy:point[1],r:4,fill:'#16d428','data-role':'axis-point'}));}
+    for(const level of levels)for(const sign of [-1,1])for(const point of [[cx+level*sign*radius,cy],[cx,cy-level*sign*radius]])marks.append(element('circle',{cx:point[0],cy:point[1],r:2,fill:'#164cdb','data-role':'projection-point'}));
     svg.append(marks);
-    svg.append(element('circle',{cx,cy,r:4,fill:'#e11924','data-role':'origin'}));
-    svg.append(element('circle',{cx:start[0],cy:start[1],r:5.5,fill:'#c36a36',stroke:'#fffefa','stroke-width':2,'data-role':'start'}));
-    svg.append(element('circle',{cx:endpoint[0],cy:endpoint[1],r:15,fill:'#fffefa',stroke:'#fffefa','stroke-width':3,'data-role':'endpoint-halo'}));
-    svg.append(element('circle',{cx:endpoint[0],cy:endpoint[1],r:10,fill:'#ffb300',stroke:'#592aa6','stroke-width':3,'data-role':'endpoint'}));
-    const same=Math.hypot(endpoint[0]-start[0],endpoint[1]-start[1])<3;
-    const labelPoint=same?[endpoint[0],endpoint[1]-28]:pos(p.angle,radius+28);
-    const vertical=!same&&Math.abs(Math.cos(p.angle))<.12;if(vertical)labelPoint[0]+=18;
-    svg.append(element('text',{x:labelPoint[0],y:labelPoint[1]+6,fill:'#592aa6',stroke:'#fffefa','stroke-width':5,'stroke-linejoin':'round','paint-order':'stroke','font-size':20,'font-weight':'bold','font-family':'Georgia','font-style':'italic','text-anchor':same?'middle':vertical?'start':Math.cos(p.angle)>.2?'start':Math.cos(p.angle)<-.2?'end':'middle','data-role':'endpoint-label'},same?'A = P':'P'));
-    if(!same)svg.append(element('text',{x:start[0]+13,y:start[1]+23,fill:'#a55e36','font-size':16,'font-family':'Georgia','font-style':'italic'},'A'));
+    svg.append(element('circle',{cx,cy,r:3,fill:'#e11924','data-role':'origin'}));
+    svg.append(element('circle',{cx:start[0],cy:start[1],r:4,fill:'#c36a36',stroke:'#fffefa','stroke-width':2,'data-role':'start'}));
+    svg.classList.toggle('picking',locating&&!solved);
+    svg.setAttribute('role',locating&&!solved?'group':'img');
+    if(locating&&!solved){
+      for(let i=0;i<p.divisions;i++){
+        const pt=pos(TAU*i/p.divisions),g=element('g',{class:'point-choice',role:'button',tabindex:i===(state.choice??0)?0:-1,'aria-label':'Точка '+(i+1)+' із '+p.divisions,'aria-pressed':String(state.choice===i),'data-choice':i});
+        g.append(element('circle',{cx:pt[0],cy:pt[1],r:15,fill:'transparent'}));
+        g.append(element('circle',{cx:pt[0],cy:pt[1],r:4.2,fill:'#fffefa',stroke:'#718296','stroke-width':1,'data-role':'choice-dot'}));
+        g.addEventListener('click',event=>{event.stopPropagation();selectPoint(i);});
+        g.addEventListener('keydown',event=>{
+          if(event.key==='Enter'||event.key===' '){event.preventDefault();selectPoint(i,true);}
+          else if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End'].includes(event.key)){
+            event.preventDefault();const next=event.key==='Home'?0:event.key==='End'?p.divisions-1:(i+(['ArrowRight','ArrowUp'].includes(event.key)?1:-1)+p.divisions)%p.divisions;
+            svg.querySelectorAll('[data-choice]').forEach(node=>node.setAttribute('tabindex',-1));const node=svg.querySelector('[data-choice="'+next+'"]');node.setAttribute('tabindex',0);node.focus();
+          }
+        });svg.append(g);
+      }
+    }
+    svg.append(arrows);
+    if(endpoint){
+      svg.append(element('circle',{cx:endpoint[0],cy:endpoint[1],r:8.5,fill:'#fffefa',stroke:'#fffefa','stroke-width':1.5,'data-role':'endpoint-halo'}));
+      svg.append(element('circle',{cx:endpoint[0],cy:endpoint[1],r:6,fill:'#ffb300',stroke:'#592aa6','stroke-width':2,'data-role':'endpoint'}));
+      const same=Math.hypot(endpoint[0]-start[0],endpoint[1]-start[1])<3;
+      const labelPoint=same?[endpoint[0],endpoint[1]-23]:pos(markedAngle,radius+24);
+      const vertical=!same&&Math.abs(Math.cos(markedAngle))<.12;if(vertical)labelPoint[0]+=18;
+      svg.append(element('text',{x:labelPoint[0],y:labelPoint[1]+6,fill:'#592aa6',stroke:'#fffefa','stroke-width':3,'stroke-linejoin':'round','paint-order':'stroke','font-size':17,'font-weight':'bold','font-family':'Georgia','font-style':'italic','text-anchor':same?'middle':vertical?'start':Math.cos(markedAngle)>.2?'start':Math.cos(markedAngle)<-.2?'end':'middle','data-role':'endpoint-label'},same?'A = P':'P'));
+      if(!same)svg.append(element('text',{x:start[0]+13,y:start[1]+23,fill:'#a55e36','font-size':16,'font-family':'Georgia','font-style':'italic'},'A'));
+    }else svg.append(element('text',{x:start[0]+13,y:start[1]+23,fill:'#a55e36','font-size':16,'font-family':'Georgia','font-style':'italic'},'A'));
     if(learning)svg.append(element('text',{x:cx,y:424,fill:'#175b49','font-size':17,'font-family':'Georgia','text-anchor':'middle'},'L = '+p.lengthLabel));
-    svg.querySelector('desc').textContent=learning?`Кут ${p.angleLabel} радіанів на одиничному колі. Довжина дуги ${p.lengthLabel}.`:`На одиничному колі є опорні точки та їхні проєкції на осі. Короткі риски задають ${divisions} рівних частин. ${p.type==='point'?'Позначено точку P; кут треба визначити у вказаному проміжку.':'Виділено напрямлену дугу від A до P.'}`;
+    svg.querySelector('desc').textContent=learning?`Кут ${p.angleLabel} радіанів на одиничному колі. Довжина дуги ${p.lengthLabel}.`:`На одиничному колі є опорні точки та їхні проєкції на осі. Короткі риски задають ${divisions} рівних частин. ${p.type==='point'?'Позначено точку P; кут треба визначити у вказаному проміжку.':locating&&!solved?'Вибери точку за заданим кутом. Стрілки переміщують фокус, Enter обирає точку.':numericConversion&&!solved?'Довідкове коло для переведення одиниць вимірювання кута.':'Виділено напрямлену дугу від A до P.'}`;
   }
   let best = {};
   try { const saved = JSON.parse(localStorage.getItem('radian-trainer-best') || '{}'); if (saved && typeof saved==='object') best=saved; } catch {}
-  const state = {total:DEFAULT_TOTAL,questions:[],problem:null,index:0,first:0,completed:0,streak:0,revealed:0,hints:0,attempts:0,settled:false,hintUsed:false,mode:'mixed',difficulty:'standard'};
+  const state = {total:DEFAULT_TOTAL,questions:[],problem:null,index:0,first:0,completed:0,streak:0,revealed:0,hints:0,attempts:0,settled:false,hintUsed:false,choice:null,mode:'mixed',difficulty:'standard'};
   const key = () => state.mode+'-'+state.difficulty+'-'+state.total;
   function updateStats() {
     $('completed').textContent=state.completed; $('streak').textContent=state.streak;
@@ -285,30 +330,43 @@
     document.querySelector('.progress').setAttribute('aria-valuenow',state.completed);
   }
   function showProblem(focus = false) {
-    state.problem=state.questions[state.index]; state.attempts=0;state.settled=false;state.hintUsed=false;
+    state.problem=state.questions[state.index]; state.attempts=0;state.settled=false;state.hintUsed=false;state.choice=null;
     const p=state.problem;
     $('circle-kind').textContent='Тригонометричне коло';
     $('type-label').textContent=TYPES[p.type];$('step').textContent=`Завдання ${state.index+1} із ${state.total}`;
-    $('task-title').textContent=p.type==='point'?'Який поворот приводить у точку P?':'Яку радіанну міру має дуга?';
+    $('task-title').textContent={arc:'Яку радіанну міру має дуга?',point:'Який поворот приводить у точку P?',degrees:'Яка градусна міра кута?',radians:'Яка радіанна міра кута?',locate:'Вибери потрібну точку на колі'}[p.type];
     $('task-meta').replaceChildren();
-    if (p.type==='point') {
+    if(p.type==='point'){
       $('task-meta').append(document.createTextNode('Відраховуй кут від A(1; 0). Подай відповідь у проміжку '));
       const range=document.createElement('span');range.className='constraint math';range.textContent=intervalText(p)+' рад';$('task-meta').append(range);
-    } else $('task-meta').textContent='Почни в точці A та рухайся вздовж зеленої дуги за стрілкою. Урахуй усі повні оберти.';
-    $('circle-caption').textContent=`Короткі риски ділять коло на ${p.divisions} рівних частин.`+(Math.abs(p.angle)>TAU+1e-9 && p.type!=='point'?' Кожна повна смуга — один оберт.':'');
+    }else if(p.type==='degrees')$('task-meta').textContent='α = '+format(p.target)+' рад. Переведи в градуси, зберігаючи знак і повні оберти.';
+    else if(p.type==='radians')$('task-meta').textContent='α = '+degreeLabel(p)+'°. Переведи в радіани, зберігаючи знак і повні оберти.';
+    else if(p.type==='locate')$('task-meta').textContent='Кут повороту α = '+format(p.target)+' рад. Вибери точку, в яку перейде A(1; 0), а потім натисни «Перевірити».';
+    else $('task-meta').textContent='Почни в точці A та рухайся вздовж зеленої дуги за стрілкою. Урахуй усі повні оберти.';
+    $('numeric-entry').hidden=p.type==='locate';$('selection-status').hidden=p.type!=='locate';
+    $('selection-status').textContent='Точку ще не вибрано. Натисни на колі потрібну точку. Для клавіатури: стрілки та Enter.';
+    $('answer-unit').textContent=p.type==='degrees'?'°':'рад';
+    $('answer').placeholder=p.type==='degrees'?'Наприклад, 120':'Наприклад, 5π/6';
+    $('answer').setAttribute('aria-label',p.type==='degrees'?'Відповідь у градусах':'Відповідь у радіанах');
+    $('input-help').textContent=p.type==='degrees'?'Введи число у градусах. Можна десятковий дріб із точністю до 0,01.':'Можна писати π або pi: −π/3, 3*pi/2, 1,5. Десяткові відповіді — до 0,01.';
+    $('circle-caption').textContent=['degrees','radians'].includes(p.type)?'Довідкове коло. Після перевірки побачиш відповідний поворот.':p.type==='locate'?'Вибери точку мишкою або дотиком. Коло має '+p.divisions+' рівних поділок.':`Короткі риски ділять коло на ${p.divisions} рівних частин.`+(Math.abs(p.angle)>TAU+1e-9&&p.type==='arc'?' Кожна повна смуга — один оберт.':'');
+    $('target-legend').hidden=!['arc','point'].includes(p.type);
     $('turn-label').textContent=(p.direction>0?'↺ Проти':'↻ За')+' годинниковою';
     $('answer').value='';$('answer').disabled=false;$('answer').removeAttribute('aria-invalid');
     $('check').disabled=false;$('hint-button').disabled=false;$('reveal').disabled=false;
     document.querySelectorAll('.key').forEach(b=>b.disabled=false);
     for (const id of ['feedback','hint','next']) $(id).hidden=true;
     $('next').textContent=state.index===state.total-1?'Підсумок серії →':'Наступне завдання →';
-    draw($('circle'),p);updateStats();if(focus)$('answer').focus();
+    draw($('circle'),p);updateStats();if(focus)(p.type==='locate'?$('circle').querySelector('[data-choice]'):$('answer')).focus();
   }
   function feedback(kind,title,text) {
     $('feedback').className='feedback '+kind;$('feedback').hidden=false;
     $('feedback-title').textContent=title;$('feedback-text').textContent=text;
   }
   function explanation(p) {
+    if(p.type==='degrees')return format(p.target)+' рад · 180°/π = '+degreeLabel(p)+'°.';
+    if(p.type==='radians')return degreeLabel(p)+'° · π/180° = '+format(p.target)+' рад.';
+    if(p.type==='locate')return 'Після відкидання повних обертів маємо '+format(fraction(2*p.answerIndex,p.divisions))+' рад. Відповідну точку позначено P на колі.';
     const sign=p.angle<0?'За годинниковою стрілкою кут від’ємний.':'Проти годинникової стрілки кут додатний.';
     const totalSteps=Math.round(Math.abs(p.angle)/TAU*p.divisions), turns=Math.floor(totalSteps/p.divisions), part=totalSteps%p.divisions;
     if (p.angle===0) return `Точка P збігається з A. У проміжку ${intervalText(p)} цьому відповідає кут 0 рад.`;
@@ -320,29 +378,55 @@
     else if(state.attempts===1){state.first++;state.streak++;}
     $('answer').disabled=true;$('check').disabled=true;$('hint-button').disabled=true;$('reveal').disabled=true;
     document.querySelectorAll('.key').forEach(b=>b.disabled=true);
-    $('next').hidden=false;updateStats();
+    $('next').hidden=false;$('target-legend').hidden=false;draw($('circle'),state.problem);
+    if(state.problem.type==='locate')$('selection-status').textContent='Правильну точку позначено P на колі.';
+    updateStats();
   }
+  function selectPoint(index,keyboard=false){
+    if(state.settled||state.problem.type!=='locate')return;
+    state.choice=index;$('feedback').hidden=true;$('target-legend').hidden=false;
+    $('selection-status').textContent='Точку вибрано. Натисни «Перевірити» або вибери іншу точку.';
+    draw($('circle'),state.problem);
+    if(keyboard)$('circle').querySelector('[data-choice="'+index+'"]').focus();
+  }
+  $('circle').addEventListener('click',event=>{
+    if(state.settled||state.problem.type!=='locate')return;
+    const svg=$('circle'),ctm=svg.getScreenCTM();if(!ctm)return;
+    const mouse=svg.createSVGPoint();mouse.x=event.clientX;mouse.y=event.clientY;const pt=mouse.matrixTransform(ctm.inverse());
+    const distance=Math.hypot(pt.x-220,pt.y-220);if(distance<151*.72||distance>151*1.23)return;
+    const angle=(Math.atan2(220-pt.y,pt.x-220)+TAU)%TAU;
+    selectPoint(Math.round(angle/TAU*state.problem.divisions)%state.problem.divisions);
+  });
   $('answer-form').addEventListener('submit',event=>{
     event.preventDefault();if(state.settled)return;
-    let answer;
-    try{answer=parseAnswer($('answer').value);}catch(error){feedback('invalid','Перевір запис відповіді',error.message);$('answer').setAttribute('aria-invalid','true');return;}
+    const p=state.problem;let answer;
+    if(p.type==='locate'){
+      if(state.choice===null){feedback('invalid','Спочатку вибери точку','Натисни потрібне місце на колі або вибери точку клавішами стрілок і Enter.');return;}
+      answer=state.choice;
+    }else try{
+      const text=$('answer').value.trim();
+      if(p.type!=='degrees'&&text.includes('°'))throw new Error('Відповідь потрібна у радіанах, наприклад π/2.');
+      answer=parseAnswer(p.type==='degrees'?text.replace(/°$/,''):text);
+    }catch(error){feedback('invalid','Перевір запис відповіді',error.message);$('answer').setAttribute('aria-invalid','true');return;}
     state.attempts++;$('answer').removeAttribute('aria-invalid');
-    if(correct(answer,state.problem)){feedback('','Правильно! '+format(state.problem.target)+' рад',explanation(state.problem));settle();}
+    if(correct(answer,state.problem)){feedback('','Правильно! '+(p.type==='degrees'?degreeLabel(p)+'°':p.type==='locate'?'Потрібну точку знайдено':format(p.target)+' рад'),explanation(p));settle();}
     else {
       state.streak=0;updateStats();$('answer').setAttribute('aria-invalid','true');
-      const p=state.problem;
       let message='Повний оберт — 2π рад. Перевір кількість поділок і напрям повороту.';
+      if(p.type==='degrees')message='Щоб перейти від радіанів до градусів, помнож кут на 180°/π.';
+      if(p.type==='radians')message='Щоб перейти від градусів до радіанів, помнож кут на π/180°.';
+      if(p.type==='locate')message='Ця точка не відповідає заданому куту. Відраховуй поворот від A та враховуй його напрям.';
       if(p.interval && !inInterval(answer,p.interval))message='Твоя відповідь поза заданим проміжком '+intervalText(p)+'. Одна точка може відповідати кільком кутам — обери потрібний.';
-      feedback('wrong','Спробуй ще раз',message);$('answer').focus();$('answer').select();
+      feedback('wrong','Спробуй ще раз',message);if(p.type!=='locate'){$('answer').focus();$('answer').select();}
     }
   });
   $('hint-button').addEventListener('click',()=>{
     if(state.settled)return;if(!state.hintUsed){state.hints++;state.hintUsed=true;}
     const p=state.problem;
-    $('hint').textContent=`У повному колі 2π радіанів і ${p.divisions} рівних поділок. Отже, одна поділка має міру 2π/${p.divisions}. Порахуй короткі риски за вказаним напрямом.`;
+    $('hint').textContent=p.type==='degrees'?'180° = π рад. Помнож радіанну міру на 180/π.':p.type==='radians'?'180° = π рад. Помнож градусну міру на π/180.':`У повному колі 2π радіанів і ${p.divisions} рівних поділок. Отже, одна поділка має міру 2π/${p.divisions}. Порахуй короткі риски за вказаним напрямом.`;
     $('hint').hidden=false;
   });
-  $('reveal').addEventListener('click',()=>{if(state.settled)return;feedback('','Розв’язання: '+format(state.problem.target)+' рад',explanation(state.problem));settle(true);});
+  $('reveal').addEventListener('click',()=>{if(state.settled)return;feedback('','Розв’язання: '+(state.problem.type==='degrees'?degreeLabel(state.problem)+'°':state.problem.type==='locate'?'правильна точка на колі':format(state.problem.target)+' рад'),explanation(state.problem));settle(true);});
   $('next').addEventListener('click',()=>{
     if(!state.settled)return;
     if(state.index===state.total-1){finish();return;}
