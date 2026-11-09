@@ -13,6 +13,8 @@
 @media(max-width:520px){.settings{grid-template-columns:minmax(0,1fr)}.settings .quiet{grid-column:auto}.top-row{flex-wrap:wrap;gap:6px}.tabs{gap:24px}.random-note{display:flex;gap:14px;flex-wrap:wrap;max-width:none;text-align:left;font-size:11px;padding-bottom:12px}.random-note br{display:none}.full-label{display:none}}
 .keypad{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.keypad .key{min-width:0;min-height:46px;padding:8px 4px}.keypad .key.small{font-size:11px}.keypad svg{vertical-align:middle}
 .settings{grid-template-columns:minmax(0,1fr) minmax(0,1fr) 120px auto}.settings input[type=number]{width:100%;min-height:46px;padding:11px 12px;border:1px solid var(--line);background:var(--white);color:var(--ink)}.count-error{color:var(--red);font-size:12px;margin:6px 0 0}.reference-note{font-size:11px;color:var(--muted);text-align:center;margin:0 0 12px}@media(max-width:780px){.settings{grid-template-columns:repeat(2,minmax(0,1fr))}.settings .quiet{grid-column:auto}}@media(max-width:520px){.settings{grid-template-columns:minmax(0,1fr)}}
+.dot.target{width:12px;height:12px;background:#ffb300;border:2px solid #592aa6;vertical-align:-1px}.count-help{display:block;font-size:11px;color:var(--muted);margin-top:5px}.count-error{display:block}
+.settings{align-items:start}.settings>.quiet{margin-top:24px}@media(max-width:520px){.settings>.quiet{margin-top:0}}
 </style>
 </head>
 <body>
@@ -30,7 +32,7 @@
     <div class="settings">
       <label><span class="field-label">Тип завдань</span><select id="mode"><option value="mixed">Змішане тренування</option><option value="arc">Дуга → радіанна міра</option><option value="point">Точка → кут повороту</option></select></label>
       <label><span class="field-label">Складність</span><select id="difficulty"><option value="basic">Початковий · додатні кути</option><option value="standard" selected>Середній · обидва напрями</option><option value="advanced">Складний · кілька обертів</option></select></label>
-      <label><span class="field-label">Кількість завдань</span><input id="question-count" type="number" inputmode="numeric" min="1" max="100" step="1" value="12" aria-describedby="count-error"><span class="count-error" id="count-error" role="alert" hidden>Введи ціле число від 1 до 100.</span></label>
+      <label><span class="field-label">Кількість завдань</span><input id="question-count" type="number" inputmode="numeric" min="1" max="100" step="1" value="12" aria-describedby="count-help count-error"><span class="count-help" id="count-help"></span><span class="count-error" id="count-error" role="alert" hidden></span></label>
       <button class="quiet" id="restart">Нова серія</button>
     </div>
     <div class="layout">
@@ -39,7 +41,7 @@
         <svg id="circle" class="circle-svg" viewBox="0 0 440 440" role="img" aria-labelledby="circle-title circle-description"><title id="circle-title">Коло для завдання</title><desc id="circle-description"></desc></svg>
         <p class="circle-caption" id="circle-caption"></p>
         <p class="reference-note">Рожеві точки — опорні кути, сині — проєкції на осі.</p>
-        <div class="legend"><span><i class="dot orange"></i>Початок A</span><span><i class="dot"></i>Кінець P</span><span id="turn-label"></span></div>
+        <div class="legend"><span><i class="dot orange"></i>Початок A</span><span><i class="dot target"></i>Кінець P</span><span id="turn-label"></span></div>
       </div>
       <div>
         <section class="card exercise" id="exercise" aria-labelledby="task-title">
@@ -157,27 +159,35 @@
     return result;
   }
   const TYPES = {arc:'Задана дуга', point:'Позначена точка'};
-  function makeProblem(mode, difficulty, previous = '') {
-    if (!['mixed','arc','point'].includes(mode)) throw new Error('Невідомий тип завдання.');
-    let p;
-    for (let trial = 0; trial < 40; trial++) {
-      const type = mode === 'mixed' ? choose(['arc','point']) : mode;
-      const divisions = choose(difficulty === 'basic' ? [4,8] : difficulty === 'standard' ? [6,8,12] : [10,12,16,20,24]);
-      const direction = difficulty === 'basic' ? 1 : choose([1,-1]);
-      let steps = type === 'point' ? randomInt(divisions) : 1 + randomInt(divisions);
-      let turns = 0;
-      if (difficulty === 'advanced') {
-        turns = randomInt(2);
-        steps += turns * divisions;
+  const poolCache=new Map();
+  function problemGroups(mode,difficulty) {
+    if(!['mixed','arc','point'].includes(mode))throw new Error('Невідомий тип завдання.');
+    if(!['basic','standard','advanced'].includes(difficulty))throw new Error('Невідомий рівень.');
+    const cacheKey=mode+'|'+difficulty;if(poolCache.has(cacheKey))return poolCache.get(cacheKey);
+    const groups=new Map(),types=mode==='mixed'?['arc','point']:[mode];
+    const divisions=difficulty==='basic'?[4,8]:difficulty==='standard'?[6,8,12]:[10,12,16,20,24];
+    for(const type of types)for(const parts of divisions)for(const direction of difficulty==='basic'?[1]:[1,-1])for(const turns of difficulty==='advanced'?[0,1]:[0]) {
+      for(let step=type==='point'?0:1;step<=(type==='point'?parts-1:parts);step++) {
+        const target=Object.freeze(fraction(2*(step+turns*parts)*direction,parts));
+        const angle=value(target),signature=target.n+'/'+target.d;
+        const interval=type!=='point'?null:Object.freeze(direction>0?[turns*TAU,(turns+1)*TAU,true,false]:[-(turns+1)*TAU,-turns*TAU,false,true]);
+        const p=Object.freeze({type,divisions:parts,direction,target,angle,radius:1,turns,interval,signature});
+        if(!groups.has(signature))groups.set(signature,[]);groups.get(signature).push(p);
       }
-      const target = fraction(2 * steps * direction, divisions);
-      const angle = value(target), sign = angle < 0 ? -1 : direction;
-      p = {type, divisions, direction:sign, target, angle, radius:1, turns, interval:null};
-      if (type === 'point') p.interval = sign > 0 ? [turns * TAU, (turns + 1) * TAU, true, false] : [-(turns + 1) * TAU, -turns * TAU, false, true];
-      p.signature = [type,format(target),divisions].join('|');
-      if (p.signature !== previous) return p;
     }
-    return p;
+    const result=Object.freeze([...groups.values()].map(g=>Object.freeze(g)));
+    poolCache.set(cacheKey,result);return result;
+  }
+  function makeProblem(mode,difficulty,previous='') {
+    const groups=problemGroups(mode,difficulty).filter(g=>g[0].signature!==previous);
+    return choose(choose(groups));
+  }
+  function questionLimit(mode,difficulty){return Math.min(100,problemGroups(mode,difficulty).length);}
+  function makeQuiz(mode,difficulty,total) {
+    const groups=[...problemGroups(mode,difficulty)];
+    if(!Number.isSafeInteger(total)||total<1||total>Math.min(100,groups.length))throw new RangeError('Недостатньо різних кутів для такої серії.');
+    for(let i=groups.length-1;i>0;i--){const j=randomInt(i+1);[groups[i],groups[j]]=[groups[j],groups[i]];}
+    return groups.slice(0,total).map(group=>choose(group));
   }
   function inInterval(answer, interval) {
     if (!interval) return true;
@@ -250,16 +260,19 @@
     svg.append(marks);
     svg.append(element('circle',{cx,cy,r:4,fill:'#e11924','data-role':'origin'}));
     svg.append(element('circle',{cx:start[0],cy:start[1],r:5.5,fill:'#c36a36',stroke:'#fffefa','stroke-width':2,'data-role':'start'}));
-    svg.append(element('circle',{cx:endpoint[0],cy:endpoint[1],r:7,fill:'#175b49',stroke:'#fffefa','stroke-width':2.5,'data-role':'endpoint'}));
-    const same=Math.hypot(endpoint[0]-start[0],endpoint[1]-start[1])<3,labelPoint=pos(p.angle,radius+20);
-    svg.append(element('text',{x:labelPoint[0],y:labelPoint[1]+5,fill:'#175b49','font-size':17,'font-family':'Georgia','font-style':'italic','text-anchor':Math.cos(p.angle)>.2?'start':Math.cos(p.angle)<-.2?'end':'middle'},same?'A = P':'P'));
+    svg.append(element('circle',{cx:endpoint[0],cy:endpoint[1],r:15,fill:'#fffefa',stroke:'#fffefa','stroke-width':3,'data-role':'endpoint-halo'}));
+    svg.append(element('circle',{cx:endpoint[0],cy:endpoint[1],r:10,fill:'#ffb300',stroke:'#592aa6','stroke-width':3,'data-role':'endpoint'}));
+    const same=Math.hypot(endpoint[0]-start[0],endpoint[1]-start[1])<3;
+    const labelPoint=same?[endpoint[0],endpoint[1]-28]:pos(p.angle,radius+28);
+    const vertical=!same&&Math.abs(Math.cos(p.angle))<.12;if(vertical)labelPoint[0]+=18;
+    svg.append(element('text',{x:labelPoint[0],y:labelPoint[1]+6,fill:'#592aa6',stroke:'#fffefa','stroke-width':5,'stroke-linejoin':'round','paint-order':'stroke','font-size':20,'font-weight':'bold','font-family':'Georgia','font-style':'italic','text-anchor':same?'middle':vertical?'start':Math.cos(p.angle)>.2?'start':Math.cos(p.angle)<-.2?'end':'middle','data-role':'endpoint-label'},same?'A = P':'P'));
     if(!same)svg.append(element('text',{x:start[0]+13,y:start[1]+23,fill:'#a55e36','font-size':16,'font-family':'Georgia','font-style':'italic'},'A'));
     if(learning)svg.append(element('text',{x:cx,y:424,fill:'#175b49','font-size':17,'font-family':'Georgia','text-anchor':'middle'},'L = '+p.lengthLabel));
     svg.querySelector('desc').textContent=learning?`Кут ${p.angleLabel} радіанів на одиничному колі. Довжина дуги ${p.lengthLabel}.`:`На одиничному колі є опорні точки та їхні проєкції на осі. Короткі риски задають ${divisions} рівних частин. ${p.type==='point'?'Позначено точку P; кут треба визначити у вказаному проміжку.':'Виділено напрямлену дугу від A до P.'}`;
   }
   let best = {};
   try { const saved = JSON.parse(localStorage.getItem('radian-trainer-best') || '{}'); if (saved && typeof saved==='object') best=saved; } catch {}
-  const state = {total:DEFAULT_TOTAL,problem:null,index:0,first:0,completed:0,streak:0,revealed:0,hints:0,attempts:0,settled:false,hintUsed:false,mode:'mixed',difficulty:'standard'};
+  const state = {total:DEFAULT_TOTAL,questions:[],problem:null,index:0,first:0,completed:0,streak:0,revealed:0,hints:0,attempts:0,settled:false,hintUsed:false,mode:'mixed',difficulty:'standard'};
   const key = () => state.mode+'-'+state.difficulty+'-'+state.total;
   function updateStats() {
     $('completed').textContent=state.completed; $('streak').textContent=state.streak;
@@ -272,8 +285,7 @@
     document.querySelector('.progress').setAttribute('aria-valuenow',state.completed);
   }
   function showProblem(focus = false) {
-    const previous=state.problem?.signature || '';
-    state.problem=makeProblem(state.mode,state.difficulty,previous); state.attempts=0;state.settled=false;state.hintUsed=false;
+    state.problem=state.questions[state.index]; state.attempts=0;state.settled=false;state.hintUsed=false;
     const p=state.problem;
     $('circle-kind').textContent='Тригонометричне коло';
     $('type-label').textContent=TYPES[p.type];$('step').textContent=`Завдання ${state.index+1} із ${state.total}`;
@@ -345,20 +357,25 @@
     for(const text of [`Правильно після повторної спроби: ${state.total-state.first-state.revealed}`,`Переглянуто розв’язань: ${state.revealed}`,`Завдань із підказкою: ${state.hints}`]){const li=document.createElement('li');li.textContent=text;$('final-details').append(li);}
     updateStats();$('again').focus();
   }
-  function restart(focus=false){
-    const input=$('question-count'),total=input.valueAsNumber;
-    if(!Number.isSafeInteger(total)||total<1||total>100){$('count-error').hidden=false;input.setAttribute('aria-invalid','true');if(focus)input.focus();return;}
+  function restart(focus=false,adjustLimit=false){
+    const input=$('question-count'),mode=$('mode').value,difficulty=$('difficulty').value;
+    const limit=questionLimit(mode,difficulty);let total=input.valueAsNumber;
+    input.max=String(limit);
+    const reduced=adjustLimit&&Number.isSafeInteger(total)&&total>limit&&total<=100;
+    $('count-help').textContent=(reduced?'Кількість зменшено. ':'')+'Без повторів: до '+limit+' завдань.';
+    if(reduced)total=limit;
+    if(!Number.isSafeInteger(total)||total<1||total>limit){$('count-error').textContent='Введи ціле число від 1 до '+limit+'.';$('count-error').hidden=false;input.setAttribute('aria-invalid','true');if(focus)input.focus();return;}
     $('count-error').hidden=true;input.removeAttribute('aria-invalid');input.value=String(total);
-    Object.assign(state,{total,problem:null,index:0,first:0,completed:0,streak:0,revealed:0,hints:0,attempts:0,settled:false,hintUsed:false,mode:$('mode').value,difficulty:$('difficulty').value});
+    Object.assign(state,{total,questions:makeQuiz(mode,difficulty,total),problem:null,index:0,first:0,completed:0,streak:0,revealed:0,hints:0,attempts:0,settled:false,hintUsed:false,mode,difficulty});
     $('summary').hidden=true;$('exercise').hidden=false;showProblem(focus);
   }
   $('question-count').addEventListener('change',()=>{
-    if($('question-count').valueAsNumber===state.total){$('count-error').hidden=true;$('question-count').removeAttribute('aria-invalid');return;}
+    if($('question-count').valueAsNumber===state.total && $('mode').value===state.mode && $('difficulty').value===state.difficulty){$('count-error').hidden=true;$('question-count').removeAttribute('aria-invalid');return;}
     restart();
   });
   $('question-count').addEventListener('input',()=>{if($('question-count').validity.valid){$('count-error').hidden=true;$('question-count').removeAttribute('aria-invalid');}});
   $('restart').addEventListener('click',()=>restart(true));$('again').addEventListener('click',()=>restart(true));
-  $('mode').addEventListener('change',()=>restart());$('difficulty').addEventListener('change',()=>restart());
+  $('mode').addEventListener('change',()=>restart(false,true));$('difficulty').addEventListener('change',()=>restart(false,true));
   document.querySelectorAll('[data-insert]').forEach(button=>button.addEventListener('click',()=>{
     const input=$('answer');if(input.disabled)return;
     const from=input.selectionStart ?? input.value.length,to=input.selectionEnd ?? from;
@@ -397,8 +414,8 @@
     learningAngle=value(learningExact);$('angle-slider').value=Math.round(learningAngle*100);renderLearning();
   }));
   // The math helpers are also used by the offline browser tests.
-  window.RadianTrainer=Object.freeze({parseAnswer,makeProblem,correct,inInterval,format,value,fraction});
-  restart();renderLearning();
+  window.RadianTrainer=Object.freeze({parseAnswer,makeProblem,makeQuiz,questionLimit,correct,inInterval,format,value,fraction});
+  restart(false,true);renderLearning();
 })();
 </script>
 </body>
