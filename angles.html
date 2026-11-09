@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#175b49">
+<title>Суміжні і вертикальні кути — тренажер для 7 класу</title>
+<style>
+:root{--paper:#f6f5ef;--ink:#203d35;--green:#175b49;--muted:#65776d;--line:#dce2d7;--white:#fffefa;--orange:#aa551c}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}main{max-width:1180px;margin:auto;padding:25px 24px 45px}a{color:var(--green)}button,input,select{font:inherit}button,select{cursor:pointer}button{border:0;touch-action:manipulation}button:disabled{opacity:.5;cursor:default}button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid #cc8b43;outline-offset:3px}[hidden]{display:none!important}.brand{display:flex;justify-content:space-between;gap:16px;font-size:13px}.brand span{color:var(--muted)}h1{font:normal clamp(32px,4.5vw,49px)/1.15 Georgia,serif;margin:26px 0 12px}h2{font:normal 27px/1.25 Georgia,serif;margin:0 0 16px}.lead{color:var(--muted);max-width:750px}.settings{display:grid;grid-template-columns:1.3fr 1fr 120px auto;gap:14px;align-items:end;margin:26px 0 20px}label{font-size:13px;font-weight:650}label>span{display:block;margin-bottom:6px}input,select{min-width:0;width:100%;min-height:46px;border:1px solid #bacabb;border-radius:10px;padding:10px 12px;color:var(--ink);background:#fff}button{border-radius:10px;min-height:46px;padding:10px 16px;color:var(--green);background:#edf0e6;font-weight:650}.primary{background:var(--green);color:white}.layout{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);gap:22px;align-items:start}.card{background:var(--white);border:1px solid var(--line);border-radius:19px;padding:25px}.eyebrow{font-size:11px;font-weight:750;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}.diagram-top{display:flex;justify-content:space-between;align-items:center;gap:12px}.badge{font-size:12px;color:var(--green);background:#e3edc5;padding:5px 10px;border-radius:22px}svg{display:block;width:100%;height:auto;max-height:460px;aspect-ratio:1}.caption{color:var(--muted);font-size:12px;text-align:center;margin:10px 0 0}.legend{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;font-size:12px;border-top:1px solid var(--line);padding-top:13px;margin-top:14px}.swatch{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:5px;background:#b7dfcc}.swatch.target{background:#f1c99c}.swatch.pair{background:#cfc5e9}.step-row{display:flex;justify-content:space-between;gap:12px;font-size:12px;color:var(--muted)}progress{width:100%;height:6px;accent-color:var(--green);margin:12px 0 23px}.prompt{padding:17px 18px;border:1px solid #b7c9ac;border-left:5px solid var(--green);border-radius:12px;background:#edf3e5;margin-bottom:20px;font-size:17px;color:#183f32}.prompt p{margin:0}.prompt .given{font-size:27px;display:block;font-family:Georgia,serif;margin-bottom:8px;color:#124d3d}.options{display:grid;gap:9px;margin:15px 0}.options button{text-align:left;background:white;border:1px solid #c4cebf;font-weight:500}.options button[aria-pressed=true]{background:#e3edc5;border:2px solid var(--green);padding:9px 15px}.answers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:15px 0}.answers.one{grid-template-columns:1fr}.answer-box{position:relative}.answer-box input{padding-right:30px;font-size:23px;font-family:Georgia,serif}.answer-box small{position:absolute;right:11px;bottom:12px;font-size:18px}.answer-box label{display:block;margin-bottom:6px}.keypad{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0}.keypad button{background:#f5f6ef;border:1px solid var(--line);font-size:19px;font-weight:500;min-height:46px;padding:7px}.keypad .small{font-size:12px}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}.actions .primary{flex:1}.text-button{background:transparent;text-decoration:underline;font-size:13px;font-weight:500;padding-inline:4px}.feedback,.hint{padding:13px 15px;border-radius:12px;margin-top:15px;font-size:14px;background:#e7f0df}.feedback p{margin:5px 0 0}.feedback.wrong{background:#fff0e5;color:#773c1b}.hint{background:#f3f2dd}.next{width:100%;margin-top:15px}.stats{display:flex;justify-content:space-around;gap:8px;margin-top:22px;padding-top:15px;border-top:1px solid var(--line);font-size:11px;color:var(--muted);text-align:center}.stats strong{display:block;font:25px Georgia,serif;color:var(--ink)}.help{font-size:12px;color:var(--muted);margin:10px 0}.error{color:#9c2c24;font-size:14px}.pick-status{font-size:14px;margin:15px 0}.angle-choice{cursor:pointer}.angle-choice:focus{outline:none}.angle-choice:focus-visible path{stroke:#592aa6;stroke-width:3}.score{font:60px Georgia,serif;color:var(--green);margin:18px 0}.rules{margin-top:24px}.rules summary{cursor:pointer;font-weight:650}.rules p{margin:12px 0;font-size:14px}.footer{font-size:12px;color:var(--muted);margin-top:24px}math{font-family:"Cambria Math",math;font-size:1.15em}.rules math{font-size:1em}@media(max-width:780px){main{padding:20px 16px 35px}.layout{grid-template-columns:1fr}.settings{grid-template-columns:1fr 1fr}.card{padding:20px}svg{max-height:350px}.brand{font-size:12px}.prompt{font-size:16px}.answers{gap:7px}.answers input{font-size:21px;padding-left:9px}}@media(max-width:450px){.settings{grid-template-columns:1fr}.brand{flex-wrap:wrap}.actions{gap:7px}.card{padding:18px}.answers{grid-template-columns:repeat(2,minmax(0,1fr))}.answers.one{grid-template-columns:1fr}}
+</style>
+</head>
+<body><main>
+<div class="brand"><span>Математична практика</span><span>Геометрія · 7 клас</span></div>
+<h1>Суміжні і вертикальні кути</h1>
+<p class="lead">Упізнавай кути, досліджуй їхні зв’язки та знаходь невідомі величини. Рисунки повертаються, властивості залишаються.</p>
+<div class="settings">
+<label><span>Тип завдань</span><select id="mode"><option value="mixed">Усі шість типів</option><option value="identify">Розпізнай пару</option><option value="select">Знайди потрібний кут</option><option value="calculate">Обчисли кут</option><option value="all">Знайди всі кути</option><option value="relation">За співвідношенням</option><option value="error">Знайди помилку</option></select></label>
+<label><span>Складність</span><select id="level"><option value="basic">Початковий</option><option value="standard" selected>Основний</option><option value="advanced">Складніший · із x</option></select></label>
+<label><span>Кількість завдань</span><input id="count" type="number" min="1" max="30" step="1" value="12"></label><button id="restart">Нова серія</button>
+</div><p id="settings-error" class="error" role="alert" hidden></p>
+<div class="layout">
+<section class="card"><div class="diagram-top"><span class="eyebrow">Досліджуй рисунок</span><span class="badge" id="type"></span></div>
+<svg id="diagram" viewBox="0 0 460 460" role="img" aria-labelledby="diagram-title diagram-desc"><title id="diagram-title">Кути для завдання</title><desc id="diagram-desc"></desc></svg>
+<p class="caption">Рисунок схематичний. Використовуй властивості кутів, а не вимірювання на екрані.</p>
+<div class="legend"><span><i class="swatch"></i>Заданий кут</span><span><i class="swatch target"></i>Шуканий / обраний</span><span><i class="swatch pair"></i>Другий кут пари</span></div>
+</section>
+<section class="card"><div class="step-row"><span id="step"></span><span id="score-label"></span></div><progress id="progress" max="12" value="0" aria-label="Виконано завдань"></progress>
+<div id="exercise"><h2 id="task-title"></h2><div class="prompt" id="prompt"></div>
+<form id="form" novalidate><div id="options" class="options"></div><p id="pick-status" class="pick-status" role="status" hidden></p><div id="answers" class="answers"></div>
+<div id="keypad" class="keypad" role="group" aria-label="Екранна клавіатура"></div><p class="help" id="answer-help"></p>
+<div class="actions"><button class="primary" id="check" type="submit">Перевірити відповідь</button><button class="text-button" id="hint-button" type="button">Підказка</button></div><button class="text-button" id="reveal" type="button">Показати розв’язання</button></form>
+<div id="hint" class="hint" hidden></div><div id="feedback" class="feedback" role="status" aria-live="polite" hidden><strong id="feedback-title"></strong><p id="feedback-text"></p></div><button class="primary next" id="next" hidden>Наступне завдання →</button></div>
+<div id="summary" hidden><h2>Серію завершено</h2><div class="score" id="final-score"></div><p>Правильних відповідей із першої спроби</p><p id="final-details"></p><button class="primary" id="again">Спробувати ще раз</button></div>
+<div class="stats"><div><strong id="completed">0</strong>Виконано</div><div><strong id="streak">0</strong>Поспіль із першої спроби</div><div><strong id="best">—</strong>Найкраща серія</div></div>
+</section>
+</div>
+<details class="card rules"><summary>Пригадай властивості</summary>
+<p><strong>Суміжні кути</strong> мають спільну сторону, а дві інші сторони є доповняльними променями. Їхня сума дорівнює 180°. Самої рівності суми 180° недостатньо, щоб назвати кути суміжними.</p>
+<p><strong>Вертикальні кути</strong> утворюються при перетині двох прямих: сторони одного кута є доповняльними променями до сторін другого. Вертикальні кути рівні.</p>
+<p>Спільна вершина або спільна сторона самі по собі не визначають вид пари. При перетині двох прямих кожен кут має один вертикальний і два суміжні.</p>
+</details><p class="footer">Помилятися можна. Пояснення допоможуть зрозуміти властивість і спробувати знову.</p>
+</main>
+<script>
+'use strict';
+(() => {
+const $=id=>document.getElementById(id),NS='http://www.w3.org/2000/svg';
+const TYPES={identify:'Розпізнай пару',select:'Знайди потрібний кут',calculate:'Обчисли кут',all:'Знайди всі кути',relation:'За співвідношенням',error:'Знайди помилку'};
+const choose=a=>a[Math.floor(Math.random()*a.length)],rand=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=rand(0,i);[a[i],a[j]]=[a[j],a[i]];}return a;};
+const nice=n=>String(n).replace('.',','),name=i=>'∠'+(i+1),sizes=a=>[a,180-a,a,180-a];
+function makeTask(type,level='standard'){
+  if(!Object.hasOwn(TYPES,type)||!['basic','standard','advanced'].includes(level))throw Error('Невідомий режим');
+  const alpha=level==='basic'?choose([30,40,45,50,60,70,80,90,100,110,120,130,135,140,150]):rand(30,150);
+  const p={type,level,alpha,rotation:rand(0,359),base:rand(0,3),shape:'cross',values:sizes(alpha)};
+  const adjacent=choose([1,3]);p.target=(p.base+choose([2,adjacent]))%4;
+  if(type==='identify'){
+    p.kind=choose(['adjacent','vertical','neither','separate']);
+    p.base=0;p.target=p.kind==='vertical'?2:1;
+    p.shape=p.kind==='neither'?'rays':p.kind==='separate'?'separate':'cross';
+    if(p.shape==='rays'){p.alpha=rand(35,70);p.beta=rand(35,70);p.values=[p.alpha,p.beta];}
+    if(p.shape==='separate')p.values=[alpha,180-alpha];
+    p.expected=[p.kind==='separate'?'neither':p.kind];
+  }else if(type==='select'){
+    p.relation=choose(['adjacent','vertical']);
+    p.expected=p.relation==='vertical'?[(p.base+2)%4]:[(p.base+1)%4,(p.base+3)%4];
+  }else if(type==='calculate')p.expected=[p.values[p.target]];
+  else if(type==='all'){p.targets=[0,1,2,3].filter(i=>i!==p.base);p.expected=p.targets.map(i=>p.values[i]);}
+  else if(type==='relation'){
+    p.base=0;p.target=1;
+    p.relation=level==='basic'?'difference':level==='advanced'?choose(['difference','ratio','expression']):choose(['difference','ratio']);
+    if(p.relation==='difference'){
+      p.alpha=rand(30,85);p.diff=180-2*p.alpha;p.expected=[p.alpha,180-p.alpha];
+    }else if(p.relation==='ratio'){
+      const pair=choose([[1,2],[1,3],[1,4],[2,3],[2,7],[3,7],[4,5],[5,7]]);p.ratio=pair;p.alpha=180*pair[0]/(pair[0]+pair[1]);p.expected=[p.alpha,180-p.alpha];
+    }else{
+      p.x=rand(10,20);p.a=rand(3,4);p.b=rand(2,4);p.c=rand(0,15);p.alpha=p.a*p.x+p.c;
+      p.d=180-p.alpha-p.b*p.x;p.expected=[p.x,p.alpha,180-p.alpha];
+    }
+    p.values=sizes(p.alpha);
+  }else if(type==='error'){
+    const actual=p.values[p.target];p.claimCorrect=Math.random()<.5;
+    p.claim=p.claimCorrect?actual:choose([actual+choose([-10,10]),180-actual].filter(n=>n>0&&n<180&&n!==actual));
+    p.expected=[p.claimCorrect?'yes':'no',actual];
+  }
+  // Rotation is deliberately excluded: turning a drawing does not make a new exercise.
+  p.signature=JSON.stringify([p.type,p.shape,p.alpha,p.beta,p.base,p.target,p.kind,p.relation,p.diff,p.ratio,p.a,p.b,p.c,p.d,p.claim]);
+  return p;
+}
+function makeQuiz(mode,level,total){
+  if(mode!=='mixed'&&!Object.hasOwn(TYPES,mode))throw Error('Невідомий режим');
+  if(!Number.isInteger(total)||total<1||total>30)throw Error('Кількість завдань: від 1 до 30.');
+  const types=mode==='mixed'?shuffle(Object.keys(TYPES)):[mode],out=[],seen=new Set();
+  for(let i=0;i<total;i++){
+    let p,tries=0;do{p=makeTask(types[i%types.length],level);if(++tries>2000)throw Error('Не вдалося сформувати серію.');}while(seen.has(p.signature));
+    seen.add(p.signature);out.push(p);
+  }return shuffle(out);
+}
+function grade(p,answers){
+  if(p.type==='select')return answers.length===1&&p.expected.includes(answers[0]);
+  return answers.length===p.expected.length&&p.expected.every((n,i)=>typeof n==='number'?Number.isFinite(answers[i])&&Math.abs(n-answers[i])<.0051:n===answers[i]);
+}
+window.AngleTrainer=Object.freeze({makeTask,makeQuiz,grade});
+let saved={};try{const value=JSON.parse(localStorage.getItem('angle-trainer-best')||'{}');if(value&&typeof value==='object')saved=value;}catch{}
+const state={quiz:[],index:0,completed:0,first:0,streak:0,revealed:0,hints:0,attempts:0,settled:false,choice:null,active:null};
+const current=()=>state.quiz[state.index],key=()=>state.mode+'|'+state.level+'|'+state.quiz.length;
+function el(tag,attrs={},text){const e=document.createElementNS(NS,tag);for(const [k,v]of Object.entries(attrs))e.setAttribute(k,v);if(text!==undefined)e.textContent=text;return e;}
+function draw(){
+ const p=current(),svg=$('diagram');svg.querySelectorAll(':scope > :not(title):not(desc)').forEach(n=>n.remove());
+ const selecting=p.type==='select'&&!state.settled;
+ svg.setAttribute('role',selecting?'group':'img');
+ $('diagram-desc').textContent=p.shape==='cross'?'Дві прямі перетинаються в точці O. Чотири кути послідовно позначено числами 1, 2, 3, 4.':p.shape==='rays'?'Три промені зі спільною вершиною O. Два виділені кути мають спільну сторону, крайні промені не є доповняльними.':'Два кути з різними вершинами. Вони не мають спільної сторони.';
+ function figure(cx,cy,angles,indices,rayCount=angles.length){
+   const pos=(a,r)=>[cx+r*Math.cos(a*Math.PI/180),cy-r*Math.sin(a*Math.PI/180)];
+   const radius=p.shape==='separate'?87:126,rayLength=p.shape==='separate'?105:181;
+   let cursor=p.rotation;const starts=[];
+   for(const amount of angles){starts.push(cursor);cursor+=amount;}
+   indices.forEach((index,j)=>{
+     const a=starts[j],amount=angles[j],mid=a+amount/2;
+     const target=p.type==='all'?p.targets.includes(index):p.type==='select'&&state.settled?p.expected.includes(index):index===p.target;
+     const filled=index===p.base?'#b7dfcc':(p.type==='identify'&&index===p.target)?'#cfc5e9':(!selecting&&target)?'#f1c99c':'#f1f1e8';
+     let d='M '+cx+' '+cy;for(let k=0;k<=40;k++){const pt=pos(a+amount*k/40,radius);d+=' L '+pt.join(' ');}d+=' Z';
+     const selected=selecting&&state.choice===index;
+     const group=el('g',{'data-sector':index});
+     group.append(el('path',{d,fill:selected?'#f1c99c':filled,stroke:selected?'#aa551c':'#fffefa','stroke-width':2}));
+     const npos=pos(mid,p.shape==='separate'?51:79);
+     group.append(el('text',{x:npos[0],y:npos[1]+7,'text-anchor':'middle','font-size':23,'font-family':'Georgia',fill:'#203d35','pointer-events':'none'},index+1));
+     if(selecting&&index!==p.base){
+       group.setAttribute('class','angle-choice');group.setAttribute('role','button');group.setAttribute('tabindex','0');group.setAttribute('aria-label','Обрати кут '+(index+1));group.setAttribute('aria-pressed',String(selected));
+       group.addEventListener('click',()=>pick(index));group.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pick(index,true);}});
+     }svg.append(group);
+     let value='';
+     if(['calculate','all','error'].includes(p.type)&&index===p.base)value=p.values[index]+'°';
+     if(p.type==='error'&&index===p.target)value=p.claim+'° ?';
+     if(p.type==='identify'&&p.shape==='separate')value=p.values[index]+'°';
+     if(p.type==='relation'&&p.relation==='expression'&&index<2)value=index===0?`${p.a}x${p.c?' + '+p.c:''}`:`${p.b}x${p.d<0?' − '+Math.abs(p.d):p.d?' + '+p.d:''}`;
+     if(state.settled&&['calculate','all','relation','error'].includes(p.type))value=p.values[index]+'°';
+     if(value){const at=pos(mid,p.shape==='separate'?76:137);svg.append(el('text',{x:at[0],y:at[1]+6,'text-anchor':'middle','font-size':p.type==='relation'?16:19,'font-family':'Georgia',fill:'#164c3e',stroke:'#fffefa','stroke-width':4,'paint-order':'stroke'},value));}
+   });
+   for(let i=0;i<rayCount;i++){const pt=pos(starts[i]??cursor,rayLength);svg.append(el('line',{x1:cx,y1:cy,x2:pt[0],y2:pt[1],stroke:'#263c35','stroke-width':2,'pointer-events':'none'}));}
+   svg.append(el('circle',{cx,cy,r:3,fill:'#263c35','pointer-events':'none'}));
+   svg.append(el('text',{x:cx+6,y:cy+20,'font-family':'Georgia','font-size':16,fill:'#263c35','pointer-events':'none'},p.shape==='separate'?(cx<230?'O':'K'):'O'));
+ }
+ if(p.shape==='cross')figure(230,230,p.values,[0,1,2,3]);
+ else if(p.shape==='rays')figure(230,230,p.values,[0,1],3);
+ else{figure(120,157,[p.values[0]],[0],2);figure(340,305,[p.values[1]],[1],2);}
+}
+function stats(){
+ $('completed').textContent=state.completed;$('streak').textContent=state.streak;$('score-label').textContent='З першої спроби: '+state.first;
+ $('progress').max=state.quiz.length;$('progress').value=state.completed;$('best').textContent=Number.isInteger(saved[key()])?saved[key()]:'—';
+}
+function formulaExpression(p,a,c){return a+'x'+(c<0?' − '+Math.abs(c):c?' + '+c:'');}
+function prompt(){
+ const p=current();$('prompt').replaceChildren();let given='',text='';
+ if(p.type==='identify')text='Визнач, яку пару утворюють виділені '+name(p.base)+' і '+name(p.target)+'. Зверни увагу на розташування їхніх сторін.';
+ if(p.type==='select')text='Обери '+(p.relation==='vertical'?'кут, вертикальний до ':'один із кутів, суміжних із ')+name(p.base)+'. Натисни на сектор рисунка, потім перевір відповідь.';
+ if(['calculate','all','error'].includes(p.type))given=name(p.base)+' = '+p.values[p.base]+'°';
+ if(p.type==='calculate')text='Знайди градусну міру '+name(p.target)+'.';
+ if(p.type==='all')text='Знайди градусні міри трьох інших кутів. Заповни кожне поле.';
+ if(p.type==='relation'){
+   if(p.relation==='difference'){given=name(1)+' − '+name(0)+' = '+p.diff+'°';text='Кути 1 і 2 суміжні. Другий кут на '+p.diff+'° більший за перший. Знайди обидва кути.';}
+   else if(p.relation==='ratio'){given=name(0)+' : '+name(1)+' = '+p.ratio.join(' : ');text='Кути 1 і 2 суміжні. Знайди їхні градусні міри за заданим відношенням.';}
+   else{given='Суміжні кути 1 і 2';text='Їхні міри: ('+formulaExpression(p,p.a,p.c)+')° та ('+formulaExpression(p,p.b,p.d)+')°. Знайди x і обидва кути.';}
+ }
+ if(p.type==='error')text='Учениця стверджує: '+name(p.target)+' = '+p.claim+'°. Чи правильна її відповідь? Обери оцінку та введи правильну міру цього кута.';
+ if(given){const g=document.createElement('strong');g.className='given';g.textContent=given;$('prompt').append(g);}
+ const node=document.createElement('p');node.textContent=text;$('prompt').append(node);
+}
+function options(items){
+ for(const [value,text]of items){const b=document.createElement('button');b.type='button';b.textContent=text;b.dataset.option=value;b.setAttribute('aria-pressed','false');b.onclick=()=>{if(state.settled)return;state.choice=value;$('options').querySelectorAll('button').forEach(n=>n.setAttribute('aria-pressed',String(n===b)));$('feedback').hidden=true;};$('options').append(b);}
+}
+function show(){
+ const p=current();Object.assign(state,{attempts:0,settled:false,choice:null,active:null,hintUsed:false});
+ $('exercise').hidden=false;$('summary').hidden=true;$('step').textContent=`Завдання ${state.index+1} із ${state.quiz.length}`;$('type').textContent=TYPES[p.type];$('task-title').textContent=TYPES[p.type];
+ for(const id of ['feedback','hint','next'])$(id).hidden=true;
+ $('options').replaceChildren();$('answers').replaceChildren();$('pick-status').hidden=p.type!=='select';$('pick-status').textContent='Кут ще не обрано. Можна натиснути на сектор або обрати його клавішею Tab і Enter.';
+ prompt();let labels=[];
+ if(p.type==='identify')options([['adjacent','Суміжні'],['vertical','Вертикальні'],['neither','Жоден із цих варіантів']]);
+ if(p.type==='calculate')labels=[name(p.target)];
+ if(p.type==='all')labels=p.targets.map(name);
+ if(p.type==='relation')labels=p.relation==='expression'?['x',name(0),name(1)]:[name(0),name(1)];
+ if(p.type==='error'){options([['yes','Відповідь правильна'],['no','У відповіді є помилка']]);labels=[name(p.target)];}
+ $('answers').classList.toggle('one',labels.length===1);$('answers').hidden=!labels.length;$('keypad').hidden=!labels.length;$('answer-help').textContent=labels.length?'Введи число. Можна користуватися екранною або фізичною клавіатурою.':'';
+ labels.forEach((label,i)=>{const box=document.createElement('div');box.className='answer-box';const l=document.createElement('label');l.htmlFor='answer-'+i;l.textContent=label;const input=document.createElement('input');Object.assign(input,{id:'answer-'+i,type:'text',inputMode:'none',autocomplete:'off',maxLength:12});input.setAttribute('aria-label',label==='x'?'Значення x':'Градусна міра '+label);input.onfocus=()=>state.active=input;box.append(l,input);if(label!=='x'){const unit=document.createElement('small');unit.textContent='°';box.append(unit);}$('answers').append(box);if(i===0)state.active=input;});
+ for(const id of ['check','hint-button','reveal'])$(id).disabled=false;
+ $('keypad').querySelectorAll('button').forEach(b=>b.disabled=false);
+ $('next').textContent=state.index===state.quiz.length-1?'Підсумок серії →':'Наступне завдання →';
+ draw();stats();
+}
+function pick(index,keyboard=false){if(state.settled||current().type!=='select')return;state.choice=index;$('pick-status').textContent='Обрано '+name(index)+'. Натисни «Перевірити відповідь».';$('feedback').hidden=true;draw();if(keyboard)$('diagram').querySelector('[data-sector="'+index+'"]').focus();}
+function explanation(p){
+ if(p.type==='identify')return p.kind==='vertical'?'Це вертикальні кути: сторони одного є доповняльними променями до сторін другого.':p.kind==='adjacent'?'Це суміжні кути: є спільна сторона, а дві інші сторони — доповняльні промені.':p.kind==='separate'?'Сума цих кутів дорівнює 180°, але вони мають різні вершини й не мають спільної сторони. Тому вони не суміжні й не вертикальні.':'Спільна сторона є, але крайні сторони не утворюють пряму. Кути не суміжні. Вони також не вертикальні.';
+ if(p.type==='select')return p.relation==='vertical'?'Вертикальний до '+name(p.base)+' — '+name(p.expected[0])+'. Їхні сторони попарно є доповняльними променями.':'Із '+name(p.base)+' суміжні '+p.expected.map(name).join(' і ')+'. Підходить будь-який із них.';
+ if(p.type==='relation'){
+   if(p.relation==='difference')return 'Сума суміжних кутів — 180°. Менший: (180° − '+p.diff+'°) : 2 = '+p.alpha+'°. Більший: 180° − '+p.alpha+'° = '+(180-p.alpha)+'°.';
+   if(p.relation==='ratio')return 'Разом '+(p.ratio[0]+p.ratio[1])+' рівних частин. Одна частина: 180° : '+(p.ratio[0]+p.ratio[1])+' = '+nice(180/(p.ratio[0]+p.ratio[1]))+'°. Кути: '+nice(p.alpha)+'° і '+nice(180-p.alpha)+'°.';
+   return '('+formulaExpression(p,p.a,p.c)+') + ('+formulaExpression(p,p.b,p.d)+') = 180. Звідси x = '+p.x+'. Кути: '+p.alpha+'° і '+(180-p.alpha)+'°.';
+ }
+ const steps=p.targets??[p.target];
+ return steps.map(i=>Math.abs(i-p.base)===2?name(i)+' = '+name(p.base)+' = '+p.values[i]+'° (вертикальні кути рівні).':name(i)+' = 180° − '+p.values[p.base]+'° = '+p.values[i]+'° (сума суміжних кутів — 180°).').join(' ');
+}
+function feedback(title,text,wrong=false){$('feedback').hidden=false;$('feedback').className='feedback'+(wrong?' wrong':'');$('feedback-title').textContent=title;$('feedback-text').textContent=text;}
+function settle(revealed=false){
+ state.settled=true;state.completed++;
+ if(revealed){state.revealed++;state.streak=0;}else if(state.attempts===1){state.first++;state.streak++;}
+ document.querySelectorAll('#form input,#form button').forEach(e=>e.disabled=true);$('next').hidden=false;
+ draw();if(current().type==='select')$('pick-status').textContent='Правильні варіанти: '+current().expected.map(name).join(', ')+'.';stats();$('next').focus();
+}
+$('form').onsubmit=e=>{
+ e.preventDefault();if(state.settled)return;
+ const p=current(),inputs=[...$('answers').querySelectorAll('input')],answers=[];
+ if(['identify','select','error'].includes(p.type)){if(state.choice===null){feedback('Спочатку обери відповідь',p.type==='select'?'Натисни на один із кутів рисунка.':'Натисни один із варіантів відповіді.',true);return;}answers.push(state.choice);}
+ for(const input of inputs){const t=input.value.trim().replace(',','.');if(!/^\d+(?:\.\d+)?$/.test(t)){feedback('Перевір запис відповіді','Заповни всі поля числами. Наприклад: 65 або 22,5.',true);input.focus();return;}answers.push(Number(t));}
+ state.attempts++;
+ if(grade(p,answers)){feedback('Правильно!',explanation(p));settle();}
+ else{state.streak=0;stats();feedback('Спробуй ще раз','Перевір усі частини відповіді. '+(p.type==='identify'||p.type==='select'?'Подивись, які сторони є спільними та які промені — доповняльними.':'Вертикальні кути рівні, а сума суміжних кутів — 180°.'),true);}
+};
+$('hint-button').onclick=()=>{if(state.settled)return;if(!state.hintUsed){state.hintUsed=true;state.hints++;}$('hint').hidden=false;const p=current();$('hint').textContent=p.type==='relation'?(p.relation==='ratio'?'Склади числа відношення. Поділи 180° на кількість частин.':p.relation==='expression'?'Склади рівняння: сума двох виразів дорівнює 180.':'Якщо від 180° відняти різницю кутів, отримаємо подвоєний менший кут.'):'Для суміжних кутів шукай спільну сторону та два доповняльні промені. Для вертикальних — дві пари доповняльних променів. Суміжні дають 180°, вертикальні рівні.';};
+$('reveal').onclick=()=>{if(state.settled)return;feedback('Розв’язання',explanation(current()));settle(true);};
+$('next').onclick=()=>{if(!state.settled)return;if(state.index<state.quiz.length-1){state.index++;show();$('task-title').setAttribute('tabindex','-1');$('task-title').focus();}else finish();};
+function finish(){saved[key()]=Math.max(saved[key()]||0,state.first);try{localStorage.setItem('angle-trainer-best',JSON.stringify(saved));}catch{}$('exercise').hidden=true;$('summary').hidden=false;$('final-score').textContent=state.first+' / '+state.quiz.length;$('final-details').textContent='Після повторної спроби: '+(state.completed-state.first-state.revealed)+'. Переглянуто розв’язань: '+state.revealed+'. Завдань із підказкою: '+state.hints+'.';stats();$('again').focus();}
+function restart(){
+ const total=$('count').valueAsNumber;if(!Number.isInteger(total)||total<1||total>30){$('settings-error').hidden=false;$('settings-error').textContent='Введи ціле число від 1 до 30. Поточну серію збережено.';return;}
+ $('settings-error').hidden=true;Object.assign(state,{quiz:makeQuiz($('mode').value,$('level').value,total),mode:$('mode').value,level:$('level').value,index:0,completed:0,first:0,streak:0,revealed:0,hints:0});show();
+}
+$('restart').onclick=restart;$('again').onclick=restart;for(const id of ['mode','level','count'])$(id).addEventListener('change',restart);
+for(const token of ['7','8','9','4','5','6','1','2','3','0',',','⌫','Очистити']){const b=document.createElement('button');b.type='button';b.textContent=token;b.dataset.key=token;if(token==='Очистити')b.className='small';if(token==='⌫')b.setAttribute('aria-label','Видалити символ');b.onpointerdown=e=>e.preventDefault();b.onclick=()=>{
+ if(state.settled)return;const input=state.active;if(!input||input.disabled)return;let a=input.selectionStart??input.value.length,z=input.selectionEnd??a;
+ if(token==='Очистити'){input.value='';a=0;}else if(token==='⌫'){if(a===z&&a>0)a--;input.value=input.value.slice(0,a)+input.value.slice(z);}else{if(input.value.length-(z-a)+token.length>input.maxLength)return;input.value=input.value.slice(0,a)+token+input.value.slice(z);a+=token.length;}
+ input.focus();input.setSelectionRange(a,a);
+};$('keypad').append(b);}
+restart();
+})();
+</script></body></html>
