@@ -5,6 +5,7 @@
 <title>Суміжні і вертикальні кути — тренажер для 7 класу</title>
 <style>
 :root{--paper:#f6f5ef;--ink:#203d35;--green:#175b49;--muted:#65776d;--line:#dce2d7;--white:#fffefa;--orange:#aa551c}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}main{max-width:1180px;margin:auto;padding:25px 24px 45px}a{color:var(--green)}button,input,select{font:inherit}button,select{cursor:pointer}button{border:0;touch-action:manipulation}button:disabled{opacity:.5;cursor:default}button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid #cc8b43;outline-offset:3px}[hidden]{display:none!important}.brand{display:flex;justify-content:space-between;gap:16px;font-size:13px}.brand span{color:var(--muted)}h1{font:normal clamp(32px,4.5vw,49px)/1.15 Georgia,serif;margin:26px 0 12px}h2{font:normal 27px/1.25 Georgia,serif;margin:0 0 16px}.lead{color:var(--muted);max-width:750px}.settings{display:grid;grid-template-columns:1.3fr 1fr 120px auto;gap:14px;align-items:end;margin:26px 0 20px}label{font-size:13px;font-weight:650}label>span{display:block;margin-bottom:6px}input,select{min-width:0;width:100%;min-height:46px;border:1px solid #bacabb;border-radius:10px;padding:10px 12px;color:var(--ink);background:#fff}button{border-radius:10px;min-height:46px;padding:10px 16px;color:var(--green);background:#edf0e6;font-weight:650}.primary{background:var(--green);color:white}.layout{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);gap:22px;align-items:start}.card{background:var(--white);border:1px solid var(--line);border-radius:19px;padding:25px}.eyebrow{font-size:11px;font-weight:750;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}.diagram-top{display:flex;justify-content:space-between;align-items:center;gap:12px}.badge{font-size:12px;color:var(--green);background:#e3edc5;padding:5px 10px;border-radius:22px}svg{display:block;width:100%;height:auto;max-height:460px;aspect-ratio:1}.caption{color:var(--muted);font-size:12px;text-align:center;margin:10px 0 0}.legend{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;font-size:12px;border-top:1px solid var(--line);padding-top:13px;margin-top:14px}.swatch{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:5px;background:#b7dfcc}.swatch.target{background:#f1c99c}.swatch.pair{background:#cfc5e9}.step-row{display:flex;justify-content:space-between;gap:12px;font-size:12px;color:var(--muted)}progress{width:100%;height:6px;accent-color:var(--green);margin:12px 0 23px}.prompt{padding:17px 18px;border:1px solid #b7c9ac;border-left:5px solid var(--green);border-radius:12px;background:#edf3e5;margin-bottom:20px;font-size:17px;color:#183f32}.prompt p{margin:0}.prompt .given{font-size:27px;display:block;font-family:Georgia,serif;margin-bottom:8px;color:#124d3d}.options{display:grid;gap:9px;margin:15px 0}.options button{text-align:left;background:white;border:1px solid #c4cebf;font-weight:500}.options button[aria-pressed=true]{background:#e3edc5;border:2px solid var(--green);padding:9px 15px}.answers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:15px 0}.answers.one{grid-template-columns:1fr}.answer-box{position:relative}.answer-box input{padding-right:30px;font-size:23px;font-family:Georgia,serif}.answer-box small{position:absolute;right:11px;bottom:12px;font-size:18px}.answer-box label{display:block;margin-bottom:6px}.keypad{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0}.keypad button{background:#f5f6ef;border:1px solid var(--line);font-size:19px;font-weight:500;min-height:46px;padding:7px}.keypad .small{font-size:12px}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}.actions .primary{flex:1}.text-button{background:transparent;text-decoration:underline;font-size:13px;font-weight:500;padding-inline:4px}.feedback,.hint{padding:13px 15px;border-radius:12px;margin-top:15px;font-size:14px;background:#e7f0df}.feedback p{margin:5px 0 0}.feedback.wrong{background:#fff0e5;color:#773c1b}.hint{background:#f3f2dd}.next{width:100%;margin-top:15px}.stats{display:flex;justify-content:space-around;gap:8px;margin-top:22px;padding-top:15px;border-top:1px solid var(--line);font-size:11px;color:var(--muted);text-align:center}.stats strong{display:block;font:25px Georgia,serif;color:var(--ink)}.help{font-size:12px;color:var(--muted);margin:10px 0}.error{color:#9c2c24;font-size:14px}.pick-status{font-size:14px;margin:15px 0}.angle-choice{cursor:pointer}.angle-choice:focus{outline:none}.angle-choice:focus-visible path{stroke:#592aa6;stroke-width:3}.score{font:60px Georgia,serif;color:var(--green);margin:18px 0}.rules{margin-top:24px}.rules summary{cursor:pointer;font-weight:650}.rules p{margin:12px 0;font-size:14px}.footer{font-size:12px;color:var(--muted);margin-top:24px}math{font-family:"Cambria Math",math;font-size:1.15em}.rules math{font-size:1em}@media(max-width:780px){main{padding:20px 16px 35px}.layout{grid-template-columns:1fr}.settings{grid-template-columns:1fr 1fr}.card{padding:20px}svg{max-height:350px}.brand{font-size:12px}.prompt{font-size:16px}.answers{gap:7px}.answers input{font-size:21px;padding-left:9px}}@media(max-width:450px){.settings{grid-template-columns:1fr}.brand{flex-wrap:wrap}.actions{gap:7px}.card{padding:18px}.answers{grid-template-columns:repeat(2,minmax(0,1fr))}.answers.one{grid-template-columns:1fr}}
+.series-clock{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:0 0 18px;padding:10px 15px;border:1px solid #dce2d7;border-radius:12px;background:#fffefa;color:#203d35;font-size:13px}.series-clock strong{font:24px "Cambria Math",Georgia,serif;font-variant-numeric:tabular-nums;margin-left:8px}.series-clock small{color:#65776d;font-size:11px}
 </style>
 </head>
 <body><main>
@@ -16,6 +17,7 @@
 <label><span>Складність</span><select id="level"><option value="basic">Початковий</option><option value="standard" selected>Основний</option><option value="advanced">Складніший · із x</option></select></label>
 <label><span>Кількість завдань</span><input id="count" type="number" min="1" max="30" step="1" value="12"></label><button id="restart">Нова серія</button>
 </div><p id="settings-error" class="error" role="alert" hidden></p>
+<div class="series-clock"><span>Час серії <strong id="elapsed-time" aria-label="Час проходження">00:00</strong></span><small>Від початку серії до останньої відповіді</small></div>
 <div class="layout">
 <section class="card"><div class="diagram-top"><span class="eyebrow">Досліджуй рисунок</span><span class="badge" id="type"></span></div>
 <svg id="diagram" viewBox="0 0 460 460" role="img" aria-labelledby="diagram-title diagram-desc"><title id="diagram-title">Кути для завдання</title><desc id="diagram-desc"></desc></svg>
@@ -38,6 +40,16 @@
 <p>Спільна вершина або спільна сторона самі по собі не визначають вид пари. При перетині двох прямих кожен кут має один вертикальний і два суміжні.</p>
 </details><p class="footer">Помилятися можна. Пояснення допоможуть зрозуміти властивість і спробувати знову.</p>
 </main>
+<script>
+(()=>{
+ let startedAt=Date.now(),stoppedAt=null;
+ const format=ms=>{const s=Math.max(0,Math.floor(ms/1000)),h=Math.floor(s/3600),m=Math.floor(s/60)%60;return (h?String(h).padStart(2,'0')+':':'')+String(m).padStart(2,'0')+':'+String(s%60).padStart(2,'0');};
+ const elapsed=()=>Math.max(0,(stoppedAt??Date.now())-startedAt);
+ function render(){document.getElementById('elapsed-time').textContent=format(elapsed());}
+ window.TrainerTimer=Object.freeze({reset(){startedAt=Date.now();stoppedAt=null;render();},stop(){if(stoppedAt===null)stoppedAt=Date.now();render();},elapsedMs:elapsed,text(){return format(elapsed());}});
+ render();setInterval(render,1000);
+})();
+</script>
 <script>
 'use strict';
 (() => {
@@ -127,11 +139,11 @@ function draw(){
        group.addEventListener('click',()=>pick(index));group.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pick(index,true);}});
      }svg.append(group);
      let value='';
-     if(['calculate','all','error'].includes(p.type)&&index===p.base)value=p.values[index]+'°';
+     if(['calculate','all','error'].includes(p.type)&&index===p.base)value=(p.givenValue??p.values[index])+'°';
      if(p.type==='error'&&index===p.target)value=p.claim+'° ?';
-     if(p.type==='identify'&&p.shape==='separate')value=p.values[index]+'°';
+     if(p.type==='identify'&&p.shape==='separate')value=(p.givenValue??p.values[index])+'°';
      if(p.type==='relation'&&p.relation==='expression'&&index<2)value=index===0?`${p.a}x${p.c?' + '+p.c:''}`:`${p.b}x${p.d<0?' − '+Math.abs(p.d):p.d?' + '+p.d:''}`;
-     if(state.settled&&['calculate','all','relation','error'].includes(p.type))value=p.values[index]+'°';
+     if(state.settled&&['calculate','all','relation','error'].includes(p.type))value=(p.givenValue??p.values[index])+'°';
      if(value){const at=pos(mid,p.shape==='separate'?76:137);svg.append(el('text',{x:at[0],y:at[1]+6,'text-anchor':'middle','font-size':p.type==='relation'?16:19,'font-family':'Georgia',fill:'#164c3e',stroke:'#fffefa','stroke-width':4,'paint-order':'stroke'},value));}
    });
    for(let i=0;i<rayCount;i++){const pt=pos(starts[i]??cursor,rayLength);svg.append(el('line',{x1:cx,y1:cy,x2:pt[0],y2:pt[1],stroke:'#263c35','stroke-width':2,'pointer-events':'none'}));}
@@ -151,7 +163,7 @@ function prompt(){
  const p=current();$('prompt').replaceChildren();let given='',text='';
  if(p.type==='identify')text='Визнач, яку пару утворюють виділені '+name(p.base)+' і '+name(p.target)+'. Зверни увагу на розташування їхніх сторін.';
  if(p.type==='select')text='Обери '+(p.relation==='vertical'?'кут, вертикальний до ':'один із кутів, суміжних із ')+name(p.base)+'. Натисни на сектор рисунка, потім перевір відповідь.';
- if(['calculate','all','error'].includes(p.type))given=name(p.base)+' = '+p.values[p.base]+'°';
+ if(['calculate','all','error'].includes(p.type))given=name(p.base)+' = '+(p.givenValue??p.values[p.base])+'°';
  if(p.type==='calculate')text='Знайди градусну міру '+name(p.target)+'.';
  if(p.type==='all')text='Знайди градусні міри трьох інших кутів. Заповни кожне поле.';
  if(p.type==='relation'){
@@ -198,7 +210,7 @@ function explanation(p){
 }
 function feedback(title,text,wrong=false){$('feedback').hidden=false;$('feedback').className='feedback'+(wrong?' wrong':'');$('feedback-title').textContent=title;$('feedback-text').textContent=text;}
 function settle(revealed=false){
- state.settled=true;state.completed++;
+ state.settled=true;state.completed++;if(state.completed===state.quiz.length)window.TrainerTimer.stop();
  if(revealed){state.revealed++;state.streak=0;}else if(state.attempts===1){state.first++;state.streak++;}
  document.querySelectorAll('#form input,#form button').forEach(e=>e.disabled=true);$('next').hidden=false;
  draw();if(current().type==='select')$('pick-status').textContent='Правильні варіанти: '+current().expected.map(name).join(', ')+'.';stats();$('next').focus();
@@ -218,7 +230,7 @@ $('next').onclick=()=>{if(!state.settled)return;if(state.index<state.quiz.length
 function finish(){saved[key()]=Math.max(saved[key()]||0,state.first);try{localStorage.setItem('angle-trainer-best',JSON.stringify(saved));}catch{}$('exercise').hidden=true;$('summary').hidden=false;$('final-score').textContent=state.first+' / '+state.quiz.length;$('final-details').textContent='Після повторної спроби: '+(state.completed-state.first-state.revealed)+'. Переглянуто розв’язань: '+state.revealed+'. Завдань із підказкою: '+state.hints+'.';stats();$('again').focus();}
 function restart(){
  const total=$('count').valueAsNumber;if(!Number.isInteger(total)||total<1||total>30){$('settings-error').hidden=false;$('settings-error').textContent='Введи ціле число від 1 до 30. Поточну серію збережено.';return;}
- $('settings-error').hidden=true;Object.assign(state,{quiz:makeQuiz($('mode').value,$('level').value,total),mode:$('mode').value,level:$('level').value,index:0,completed:0,first:0,streak:0,revealed:0,hints:0});show();
+ $('settings-error').hidden=true;Object.assign(state,{quiz:makeQuiz($('mode').value,$('level').value,total),mode:$('mode').value,level:$('level').value,index:0,completed:0,first:0,streak:0,revealed:0,hints:0});window.TrainerTimer.reset();show();
 }
 $('restart').onclick=restart;$('again').onclick=restart;for(const id of ['mode','level','count'])$(id).addEventListener('change',restart);
 for(const token of ['7','8','9','4','5','6','1','2','3','0',',','⌫','Очистити']){const b=document.createElement('button');b.type='button';b.textContent=token;b.dataset.key=token;if(token==='Очистити')b.className='small';if(token==='⌫')b.setAttribute('aria-label','Видалити символ');b.onpointerdown=e=>e.preventDefault();b.onclick=()=>{

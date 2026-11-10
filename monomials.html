@@ -4,12 +4,14 @@
 .task-card .prompt{margin-top:15px}.given{font-size:clamp(24px,3vw,32px);padding:15px 2px}.formula-scroll{overflow-x:auto;max-width:100%;min-width:0}.math-note{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:15px;margin-top:22px}.entry-switch{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}.entry-switch button{font-size:12px;flex:1}.entry-switch button[aria-pressed=true]{background:var(--green);color:white}.variable-bank{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:13px 0}.variable-cell{border:1px solid var(--line);border-radius:12px;padding:8px;min-width:0}.variable-cell button{width:100%;font:italic 24px Georgia,serif;background:#f0f2e9}.variable-cell button[aria-pressed=true]{background:#e3edc5;border:1px solid var(--green)}.variable-cell label{display:block;font-size:11px;margin-top:7px;font-weight:500}.variable-cell input{font:19px Georgia,serif;text-align:center;padding:7px 4px;min-height:44px}.variable-cell input:disabled{background:#f0f0eb;opacity:.6}.coefficient-input{font:25px Georgia,serif}.keypad{grid-template-columns:repeat(4,minmax(0,1fr))}.preview-box{border:1px solid #b8cbb2;background:#f1f5e9;border-radius:12px;padding:12px 15px;margin-top:16px}.preview-label{font-size:11px;color:var(--muted)}#preview{font-size:27px;padding:10px 0;min-height:55px}#preview.muted{font:13px system-ui;color:var(--muted)}.solution-math{font-size:22px;overflow-x:auto;padding:8px 0}.options math{font-size:25px}.options button{min-height:60px}.info-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}.info-fields input{font:24px Georgia,serif}#expression{font-family:monospace;font-size:20px}.stats{margin-top:22px}.summary-center{text-align:center}.rules math{white-space:nowrap}.rules .formula-scroll{font-size:23px}.task-card h2{margin-top:18px}.answer-help{font-size:12px;color:var(--muted)}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}@media(max-width:450px){.info-fields{grid-template-columns:1fr}.variable-bank{gap:7px}.variable-cell{padding:6px}.given{font-size:26px}.entry-switch button{font-size:11px;padding-inline:8px}} 
 .layout>.card{min-width:0}.prompt{min-width:0}.prompt .given{font-size:clamp(24px,3vw,32px)}
 .prompt .given,.solution-math{display:flex;flex-wrap:wrap;gap:8px 6px;align-items:center}.math-part{max-width:100%;overflow-x:auto}
+.series-clock{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:0 0 18px;padding:10px 15px;border:1px solid #dce2d7;border-radius:12px;background:#fffefa;color:#203d35;font-size:13px}.series-clock strong{font:24px "Cambria Math",Georgia,serif;font-variant-numeric:tabular-nums;margin-left:8px}.series-clock small{color:#65776d;font-size:11px}
 </style></head><body><main>
 <div class="brand"><span>Математична практика</span><span>Алгебра · 7 клас</span></div>
 <h1>Одночлени</h1><p class="lead">Від розпізнавання виразу — до впевнених перетворень. Складай відповідь і одразу бач її математичний запис.</p>
 <div class="settings"><label><span>Тип завдань</span><select id="mode"><option value="mixed">Усі шість типів</option><option value="identify">Розпізнай одночлен</option><option value="standard">Стандартний вигляд</option><option value="info">Коефіцієнт і степінь</option><option value="multiply">Перемнож одночлени</option><option value="power">Піднеси до степеня</option><option value="error">Знайди помилку</option></select></label>
 <label><span>Складність</span><select id="level"><option value="basic">Початковий</option><option value="standard" selected>Основний</option><option value="advanced">Складніший · дроби</option></select></label>
 <label><span>Кількість завдань</span><input id="count" type="number" inputmode="numeric" min="1" max="30" step="1" value="12"></label><button id="restart">Нова серія</button></div><p class="error" id="settings-error" role="alert" hidden></p>
+<div class="series-clock"><span>Час серії <strong id="elapsed-time" aria-label="Час проходження">00:00</strong></span><small>Від початку серії до останньої відповіді</small></div>
 <div class="layout"><section class="card task-card" id="task-card"><div class="step-row"><span id="step"></span><span id="score-label"></span></div><progress id="progress" max="12" value="0" aria-label="Виконано завдань"></progress><span class="badge" id="type"></span>
 <h2 id="task-title" tabindex="-1"></h2><div class="prompt"><p id="instruction"></p><div class="given formula-scroll" id="given"></div></div>
 <p class="math-note">Числовий коефіцієнт записуємо разом зі знаком. Показник 1 біля змінної зазвичай не пишемо.</p></section>
@@ -25,6 +27,16 @@
 <div class="stats"><div><strong id="completed">0</strong>Виконано</div><div><strong id="streak">0</strong>Поспіль із першої спроби</div><div><strong id="best">—</strong>Найкраща серія</div></div></section></div>
 <details class="card rules"><summary>Пригадай правила</summary><p><strong>Одночлен</strong> — добуток чисел, змінних та їхніх степенів із натуральними показниками. Числа й окремі змінні також є одночленами.</p><p><strong>Стандартний вигляд:</strong> один числовий коефіцієнт попереду, кожна змінна — один раз. Порядок змінних на значення виразу не впливає.</p><p><strong>Степінь одночлена</strong> — сума показників степенів його змінних. Степінь ненульового числа — 0. Нульовий одночлен у вправах на визначення степеня не використовується.</p><div class="formula-scroll" data-tex="a^m\cdot a^n=a^{m+n}"></div><div class="formula-scroll" data-tex="(a^m)^n=a^{mn}"></div><p>Під час піднесення одночлена до степеня підносимо до нього кожен множник, включно з коефіцієнтом.</p></details>
 <p class="footer">Помилка — привід перевірити правило. Дробові коефіцієнти порівнюються точно.</p></main>
+<script>
+(()=>{
+ let startedAt=Date.now(),stoppedAt=null;
+ const format=ms=>{const s=Math.max(0,Math.floor(ms/1000)),h=Math.floor(s/3600),m=Math.floor(s/60)%60;return (h?String(h).padStart(2,'0')+':':'')+String(m).padStart(2,'0')+':'+String(s%60).padStart(2,'0');};
+ const elapsed=()=>Math.max(0,(stoppedAt??Date.now())-startedAt);
+ function render(){document.getElementById('elapsed-time').textContent=format(elapsed());}
+ window.TrainerTimer=Object.freeze({reset(){startedAt=Date.now();stoppedAt=null;render();},stop(){if(stoppedAt===null)stoppedAt=Date.now();render();},elapsedMs:elapsed,text(){return format(elapsed());}});
+ render();setInterval(render,1000);
+})();
+</script>
 <!-- KaTeX, MIT license; embedded for offline LaTeX rendering.
 The MIT License (MIT)
 
@@ -239,7 +251,7 @@ function explanation(p){
 }
 function feedback(title,text,wrong=false){$('feedback').hidden=false;$('feedback').className='feedback'+(wrong?' wrong':'');$('feedback-title').textContent=title;$('feedback-text').textContent=text;}
 function settle(revealed=false){
- state.settled=true;state.completed++;
+ state.settled=true;state.completed++;if(state.completed===state.questions.length)window.TrainerTimer.stop();
  if(revealed){state.revealed++;state.streak=0;}else if(state.attempts===1){state.first++;state.streak++;}
  document.querySelectorAll('#form input,#form button').forEach(e=>e.disabled=true);$('next').hidden=false;stats();$('next').focus();
 }
@@ -271,7 +283,7 @@ function finish(){
 }
 function restart(){
  const total=$('count').valueAsNumber;if(!Number.isInteger(total)||total<1||total>30){$('settings-error').hidden=false;$('settings-error').textContent='Введи ціле число від 1 до 30. Поточну серію збережено.';return;}
- $('settings-error').hidden=true;Object.assign(state,{questions:makeQuiz($('mode').value,$('level').value,total),mode:$('mode').value,level:$('level').value,index:0,completed:0,first:0,streak:0,revealed:0,hints:0});show();
+ $('settings-error').hidden=true;Object.assign(state,{questions:makeQuiz($('mode').value,$('level').value,total),mode:$('mode').value,level:$('level').value,index:0,completed:0,first:0,streak:0,revealed:0,hints:0});window.TrainerTimer.reset();show();
 }
 function refreshKeys(){
  const integerOnly=state.active?.dataset.numeric==='integer';

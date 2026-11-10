@@ -17,6 +17,7 @@
 .settings{align-items:start}.settings>.quiet{margin-top:24px}@media(max-width:520px){.settings>.quiet{margin-top:0}}
 .selection-status{padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:#f0f3e7;margin-bottom:16px;font-size:14px}#circle.picking{cursor:crosshair;touch-action:manipulation}.point-choice{cursor:pointer}.point-choice:focus-visible{outline:none}.point-choice:focus-visible [data-role=choice-dot]{stroke:#592aa6;stroke-width:3;fill:#ffe18a}
 .prompt-meta{background:#edf3e5;border:1px solid #b7c9ac;border-left:5px solid var(--green);border-radius:12px;padding:17px 19px;margin:0 0 24px;color:var(--ink);font-size:16px;line-height:1.55;min-height:0}.given-angle{display:block;margin:2px 0 14px;font-size:clamp(27px,4vw,34px);color:#124d3d;line-height:1.4}.given-angle math{font-size:1em}.prompt-instruction{margin:0}.prompt-meta .constraint{display:block;width:fit-content;font-size:24px;margin-top:12px;background:transparent;padding:0}.prompt-meta math{font-family:"Cambria Math",math}
+.series-clock{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:0 0 18px;padding:10px 15px;border:1px solid #dce2d7;border-radius:12px;background:#fffefa;color:#203d35;font-size:13px}.series-clock strong{font:24px "Cambria Math",Georgia,serif;font-variant-numeric:tabular-nums;margin-left:8px}.series-clock small{color:#65776d;font-size:11px}
 </style>
 </head>
 <body>
@@ -37,7 +38,8 @@
       <label><span class="field-label">Кількість завдань</span><input id="question-count" type="number" inputmode="numeric" min="1" max="100" step="1" value="12" aria-describedby="count-help count-error"><span class="count-help" id="count-help"></span><span class="count-error" id="count-error" role="alert" hidden></span></label>
       <button class="quiet" id="restart">Нова серія</button>
     </div>
-    <div class="layout">
+    <div class="series-clock"><span>Час серії <strong id="elapsed-time" aria-label="Час проходження">00:00</strong></span><small>Від початку серії до останньої відповіді</small></div>
+<div class="layout">
       <div class="card circle-card">
         <div class="card-top"><span class="eyebrow" id="circle-kind">Тригонометричне коло</span><span class="type-badge" id="type-label">Задана дуга</span></div>
         <svg id="circle" class="circle-svg" viewBox="0 0 440 440" role="img" aria-labelledby="circle-title circle-description"><title id="circle-title">Коло для завдання</title><desc id="circle-description"></desc></svg>
@@ -91,6 +93,16 @@
   </section>
   <footer class="footer"><span>Помилятися можна. Важливо зрозуміти, звідки береться відповідь.</span><span>Повний оберт = 2π рад · Півоберт = π рад</span></footer>
 </main>
+<script>
+(()=>{
+ let startedAt=Date.now(),stoppedAt=null;
+ const format=ms=>{const s=Math.max(0,Math.floor(ms/1000)),h=Math.floor(s/3600),m=Math.floor(s/60)%60;return (h?String(h).padStart(2,'0')+':':'')+String(m).padStart(2,'0')+':'+String(s%60).padStart(2,'0');};
+ const elapsed=()=>Math.max(0,(stoppedAt??Date.now())-startedAt);
+ function render(){document.getElementById('elapsed-time').textContent=format(elapsed());}
+ window.TrainerTimer=Object.freeze({reset(){startedAt=Date.now();stoppedAt=null;render();},stop(){if(stoppedAt===null)stoppedAt=Date.now();render();},elapsedMs:elapsed,text(){return format(elapsed());}});
+ render();setInterval(render,1000);
+})();
+</script>
 <!-- KaTeX bundled for offline LaTeX rendering.
 The MIT License (MIT)
 
@@ -420,7 +432,7 @@ SOFTWARE.
     return `Одна поділка: 2π/${p.divisions} рад. ${turns ? 'Повних обертів: '+turns+'; решта поділок: '+part+'. ' : 'Від A до P за заданим напрямом — '+part+' поділок. '}${sign} α = ${format(p.target)} рад.`;
   }
   function settle(revealed=false) {
-    if(state.settled)return;state.settled=true;state.completed++;
+    if(state.settled)return;state.settled=true;state.completed++;if(state.completed===state.total)window.TrainerTimer.stop();
     if(revealed){state.revealed++;state.streak=0;}
     else if(state.attempts===1){state.first++;state.streak++;}
     $('answer').disabled=true;$('check').disabled=true;$('hint-button').disabled=true;$('reveal').disabled=true;
@@ -498,7 +510,7 @@ SOFTWARE.
     if(!Number.isSafeInteger(total)||total<1||total>limit){$('count-error').textContent='Введи ціле число від 1 до '+limit+'.';$('count-error').hidden=false;input.setAttribute('aria-invalid','true');if(focus)input.focus();return;}
     $('count-error').hidden=true;input.removeAttribute('aria-invalid');input.value=String(total);
     Object.assign(state,{total,questions:makeQuiz(mode,difficulty,total),problem:null,index:0,first:0,completed:0,streak:0,revealed:0,hints:0,attempts:0,settled:false,hintUsed:false,mode,difficulty});
-    $('summary').hidden=true;$('exercise').hidden=false;showProblem(focus);
+    window.TrainerTimer.reset();$('summary').hidden=true;$('exercise').hidden=false;showProblem(focus);
   }
   $('question-count').addEventListener('change',()=>{
     if($('question-count').valueAsNumber===state.total && $('mode').value===state.mode && $('difficulty').value===state.difficulty){$('count-error').hidden=true;$('question-count').removeAttribute('aria-invalid');return;}
